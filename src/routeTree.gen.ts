@@ -10,11 +10,41 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExerciseAnswersRouteImport } from './routes/exercise-answers'
+import { Route as ModelQuestionsRouteImport } from './routes/model-questions'
+import { Route as NotesRouteImport } from './routes/notes'
+import { Route as PastPapersRouteImport } from './routes/past-papers'
+import { Route as QuestionBankRouteImport } from './routes/question-bank'
 import { Route as SubjectClassIdSlugRouteImport } from './routes/subject.$classId.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExerciseAnswersRoute = ExerciseAnswersRouteImport.update({
+  id: '/exercise-answers',
+  path: '/exercise-answers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModelQuestionsRoute = ModelQuestionsRouteImport.update({
+  id: '/model-questions',
+  path: '/model-questions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotesRoute = NotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PastPapersRoute = PastPapersRouteImport.update({
+  id: '/past-papers',
+  path: '/past-papers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuestionBankRoute = QuestionBankRouteImport.update({
+  id: '/question-bank',
+  path: '/question-bank',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubjectClassIdSlugRoute = SubjectClassIdSlugRouteImport.update({
@@ -25,27 +55,69 @@ const SubjectClassIdSlugRoute = SubjectClassIdSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/exercise-answers': typeof ExerciseAnswersRoute
+  '/model-questions': typeof ModelQuestionsRoute
+  '/notes': typeof NotesRoute
+  '/past-papers': typeof PastPapersRoute
+  '/question-bank': typeof QuestionBankRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/exercise-answers': typeof ExerciseAnswersRoute
+  '/model-questions': typeof ModelQuestionsRoute
+  '/notes': typeof NotesRoute
+  '/past-papers': typeof PastPapersRoute
+  '/question-bank': typeof QuestionBankRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/exercise-answers': typeof ExerciseAnswersRoute
+  '/model-questions': typeof ModelQuestionsRoute
+  '/notes': typeof NotesRoute
+  '/past-papers': typeof PastPapersRoute
+  '/question-bank': typeof QuestionBankRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/subject/$classId/$slug'
+  fullPaths:
+    | '/'
+    | '/exercise-answers'
+    | '/model-questions'
+    | '/notes'
+    | '/past-papers'
+    | '/question-bank'
+    | '/subject/$classId/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/subject/$classId/$slug'
-  id: '__root__' | '/' | '/subject/$classId/$slug'
+  to:
+    | '/'
+    | '/exercise-answers'
+    | '/model-questions'
+    | '/notes'
+    | '/past-papers'
+    | '/question-bank'
+    | '/subject/$classId/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/exercise-answers'
+    | '/model-questions'
+    | '/notes'
+    | '/past-papers'
+    | '/question-bank'
+    | '/subject/$classId/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExerciseAnswersRoute: typeof ExerciseAnswersRoute
+  ModelQuestionsRoute: typeof ModelQuestionsRoute
+  NotesRoute: typeof NotesRoute
+  PastPapersRoute: typeof PastPapersRoute
+  QuestionBankRoute: typeof QuestionBankRoute
   SubjectClassIdSlugRoute: typeof SubjectClassIdSlugRoute
 }
 
@@ -56,6 +128,41 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exercise-answers': {
+      id: '/exercise-answers'
+      path: '/exercise-answers'
+      fullPath: '/exercise-answers'
+      preLoaderRoute: typeof ExerciseAnswersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/model-questions': {
+      id: '/model-questions'
+      path: '/model-questions'
+      fullPath: '/model-questions'
+      preLoaderRoute: typeof ModelQuestionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notes': {
+      id: '/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof NotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/past-papers': {
+      id: '/past-papers'
+      path: '/past-papers'
+      fullPath: '/past-papers'
+      preLoaderRoute: typeof PastPapersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/question-bank': {
+      id: '/question-bank'
+      path: '/question-bank'
+      fullPath: '/question-bank'
+      preLoaderRoute: typeof QuestionBankRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/subject/$classId/$slug': {
@@ -70,6 +177,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExerciseAnswersRoute: ExerciseAnswersRoute,
+  ModelQuestionsRoute: ModelQuestionsRoute,
+  NotesRoute: NotesRoute,
+  PastPapersRoute: PastPapersRoute,
+  QuestionBankRoute: QuestionBankRoute,
   SubjectClassIdSlugRoute: SubjectClassIdSlugRoute,
 }
 export const routeTree = rootRouteImport
