@@ -41,7 +41,7 @@ export function Navbar() {
       <nav className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-3 lg:px-8">
         <Link to="/" className="flex min-w-0 items-center gap-2">
           <img src={logo} alt="StudyHub Nepal logo" width={40} height={40} className="h-9 w-9 shrink-0" />
-          <span className="truncate font-display text-lg font-extrabold">
+          <span className="truncate whitespace-nowrap font-display text-lg font-extrabold">
             StudyHub <span className="brand-gradient-text">Nepal</span>
           </span>
         </Link>

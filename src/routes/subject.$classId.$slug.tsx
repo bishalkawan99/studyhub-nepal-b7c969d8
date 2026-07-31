@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { getSubject, subjects } from "@/lib/study-data";
+import { SubjectIcon } from "@/components/SubjectIcon";
 
 export const Route = createFileRoute("/subject/$classId/$slug")({
   loader: ({ params }) => {
