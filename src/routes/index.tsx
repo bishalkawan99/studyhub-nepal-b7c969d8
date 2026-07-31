@@ -52,10 +52,10 @@ const stats = [
 ];
 
 const floating = [
-  { icon: GraduationCap, className: "left-[6%] top-[18%]" },
-  { icon: BookOpen, className: "right-[8%] top-[26%]" },
-  { icon: Trophy, className: "left-[12%] bottom-[14%]" },
-  { icon: Sparkles, className: "right-[14%] bottom-[20%]" },
+  { icon: GraduationCap, className: "left-[2%] top-[12%]" },
+  { icon: BookOpen, className: "left-[3%] bottom-[14%]" },
+  { icon: Trophy, className: "right-[2%] top-[16%]" },
+  { icon: Sparkles, className: "right-[3%] bottom-[12%]" },
 ];
 
 function Home() {
