@@ -12,12 +12,16 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ExerciseAnswersRouteImport } from './routes/exercise-answers'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as McqsRouteImport } from './routes/mcqs'
 import { Route as ModelQuestionsRouteImport } from './routes/model-questions'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as PastPapersRouteImport } from './routes/past-papers'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QuestionBankRouteImport } from './routes/question-bank'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SubjectClassIdSlugRouteImport } from './routes/subject.$classId.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,9 +39,19 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExerciseAnswersRoute = ExerciseAnswersRouteImport.update({
   id: '/exercise-answers',
   path: '/exercise-answers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McqsRoute = McqsRouteImport.update({
@@ -60,9 +74,19 @@ const PastPapersRoute = PastPapersRouteImport.update({
   path: '/past-papers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QuestionBankRoute = QuestionBankRouteImport.update({
   id: '/question-bank',
   path: '/question-bank',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubjectClassIdSlugRoute = SubjectClassIdSlugRouteImport.update({
@@ -75,24 +99,32 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/exercise-answers': typeof ExerciseAnswersRoute
+  '/login': typeof LoginRoute
   '/mcqs': typeof McqsRoute
   '/model-questions': typeof ModelQuestionsRoute
   '/notes': typeof NotesRoute
   '/past-papers': typeof PastPapersRoute
+  '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/exercise-answers': typeof ExerciseAnswersRoute
+  '/login': typeof LoginRoute
   '/mcqs': typeof McqsRoute
   '/model-questions': typeof ModelQuestionsRoute
   '/notes': typeof NotesRoute
   '/past-papers': typeof PastPapersRoute
+  '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRoutesById {
@@ -100,12 +132,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/exercise-answers': typeof ExerciseAnswersRoute
+  '/login': typeof LoginRoute
   '/mcqs': typeof McqsRoute
   '/model-questions': typeof ModelQuestionsRoute
   '/notes': typeof NotesRoute
   '/past-papers': typeof PastPapersRoute
+  '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRouteTypes {
@@ -114,36 +150,48 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/blog'
+    | '/contact'
     | '/exercise-answers'
+    | '/login'
     | '/mcqs'
     | '/model-questions'
     | '/notes'
     | '/past-papers'
+    | '/privacy'
     | '/question-bank'
+    | '/terms'
     | '/subject/$classId/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/blog'
+    | '/contact'
     | '/exercise-answers'
+    | '/login'
     | '/mcqs'
     | '/model-questions'
     | '/notes'
     | '/past-papers'
+    | '/privacy'
     | '/question-bank'
+    | '/terms'
     | '/subject/$classId/$slug'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/blog'
+    | '/contact'
     | '/exercise-answers'
+    | '/login'
     | '/mcqs'
     | '/model-questions'
     | '/notes'
     | '/past-papers'
+    | '/privacy'
     | '/question-bank'
+    | '/terms'
     | '/subject/$classId/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -151,12 +199,16 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRoute
+  ContactRoute: typeof ContactRoute
   ExerciseAnswersRoute: typeof ExerciseAnswersRoute
+  LoginRoute: typeof LoginRoute
   McqsRoute: typeof McqsRoute
   ModelQuestionsRoute: typeof ModelQuestionsRoute
   NotesRoute: typeof NotesRoute
   PastPapersRoute: typeof PastPapersRoute
+  PrivacyRoute: typeof PrivacyRoute
   QuestionBankRoute: typeof QuestionBankRoute
+  TermsRoute: typeof TermsRoute
   SubjectClassIdSlugRoute: typeof SubjectClassIdSlugRoute
 }
 
@@ -183,11 +235,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/exercise-answers': {
       id: '/exercise-answers'
       path: '/exercise-answers'
       fullPath: '/exercise-answers'
       preLoaderRoute: typeof ExerciseAnswersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcqs': {
@@ -218,11 +284,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PastPapersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/question-bank': {
       id: '/question-bank'
       path: '/question-bank'
       fullPath: '/question-bank'
       preLoaderRoute: typeof QuestionBankRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/subject/$classId/$slug': {
@@ -239,12 +319,16 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BlogRoute: BlogRoute,
+  ContactRoute: ContactRoute,
   ExerciseAnswersRoute: ExerciseAnswersRoute,
+  LoginRoute: LoginRoute,
   McqsRoute: McqsRoute,
   ModelQuestionsRoute: ModelQuestionsRoute,
   NotesRoute: NotesRoute,
   PastPapersRoute: PastPapersRoute,
+  PrivacyRoute: PrivacyRoute,
   QuestionBankRoute: QuestionBankRoute,
+  TermsRoute: TermsRoute,
   SubjectClassIdSlugRoute: SubjectClassIdSlugRoute,
 }
 export const routeTree = rootRouteImport
