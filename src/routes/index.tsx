@@ -12,7 +12,7 @@ import {
   Users,
 } from "lucide-react";
 import heroImg from "@/assets/hero-students.png";
-import { SearchBar } from "@/components/SearchBar";
+import { SubjectIcon } from "@/components/SubjectIcon";
 import { classes, subjects, blogPosts } from "@/lib/study-data";
 
 export const Route = createFileRoute("/")({
@@ -167,7 +167,9 @@ function Home() {
                 params={{ classId: c, slug: s.slug }}
                 className="lift group rounded-2xl border border-border bg-card p-5"
               >
-                <span className="text-2xl">{s.icon}</span>
+                <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <SubjectIcon slug={s.slug} />
+                </span>
                 <h3 className="mt-3 text-base font-bold group-hover:text-primary">{s.name}</h3>
                 <p className="mt-1 text-xs text-muted-foreground">{s.blurb}</p>
                 <p className="mt-4 text-xs font-semibold text-primary">{s.chapters.length} chapters</p>
