@@ -12,6 +12,7 @@ import {
   Users,
 } from "lucide-react";
 import heroImg from "@/assets/hero-students.png";
+import { SearchBar } from "@/components/SearchBar";
 import { SubjectIcon } from "@/components/SubjectIcon";
 import { classes, subjects, blogPosts } from "@/lib/study-data";
 
