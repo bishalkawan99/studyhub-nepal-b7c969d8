@@ -69,8 +69,8 @@ function SubjectPage() {
 
         <header className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 sm:flex sm:flex-wrap sm:justify-between">
           <div className="flex min-w-0 items-center gap-3">
-            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary/10 text-2xl">
-              {subject.icon}
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary">
+              <SubjectIcon slug={subject.slug} className="h-6 w-6" />
             </span>
             <div className="min-w-0">
               <h1 className="truncate font-display text-2xl font-extrabold sm:text-3xl">
@@ -244,7 +244,9 @@ function SubjectPage() {
                     params={{ classId, slug: s.slug }}
                     className="rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:text-primary"
                   >
-                    {s.icon} {s.name}
+                    <span className="inline-flex items-center gap-1.5">
+                      <SubjectIcon slug={s.slug} className="h-3.5 w-3.5" /> {s.name}
+                    </span>
                   </Link>
                 ))}
             </div>
