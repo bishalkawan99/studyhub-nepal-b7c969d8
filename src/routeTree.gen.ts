@@ -10,33 +10,206 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ExerciseAnswersRouteImport } from './routes/exercise-answers'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as McqsRouteImport } from './routes/mcqs'
+import { Route as ModelQuestionsRouteImport } from './routes/model-questions'
+import { Route as NotesRouteImport } from './routes/notes'
+import { Route as PastPapersRouteImport } from './routes/past-papers'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as QuestionBankRouteImport } from './routes/question-bank'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SubjectClassIdSlugRouteImport } from './routes/subject.$classId.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExerciseAnswersRoute = ExerciseAnswersRouteImport.update({
+  id: '/exercise-answers',
+  path: '/exercise-answers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McqsRoute = McqsRouteImport.update({
+  id: '/mcqs',
+  path: '/mcqs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModelQuestionsRoute = ModelQuestionsRouteImport.update({
+  id: '/model-questions',
+  path: '/model-questions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotesRoute = NotesRouteImport.update({
+  id: '/notes',
+  path: '/notes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PastPapersRoute = PastPapersRouteImport.update({
+  id: '/past-papers',
+  path: '/past-papers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuestionBankRoute = QuestionBankRouteImport.update({
+  id: '/question-bank',
+  path: '/question-bank',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubjectClassIdSlugRoute = SubjectClassIdSlugRouteImport.update({
+  id: '/subject/$classId/$slug',
+  path: '/subject/$classId/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
+  '/exercise-answers': typeof ExerciseAnswersRoute
+  '/login': typeof LoginRoute
+  '/mcqs': typeof McqsRoute
+  '/model-questions': typeof ModelQuestionsRoute
+  '/notes': typeof NotesRoute
+  '/past-papers': typeof PastPapersRoute
+  '/privacy': typeof PrivacyRoute
+  '/question-bank': typeof QuestionBankRoute
+  '/terms': typeof TermsRoute
+  '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
+  '/exercise-answers': typeof ExerciseAnswersRoute
+  '/login': typeof LoginRoute
+  '/mcqs': typeof McqsRoute
+  '/model-questions': typeof ModelQuestionsRoute
+  '/notes': typeof NotesRoute
+  '/past-papers': typeof PastPapersRoute
+  '/privacy': typeof PrivacyRoute
+  '/question-bank': typeof QuestionBankRoute
+  '/terms': typeof TermsRoute
+  '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
+  '/exercise-answers': typeof ExerciseAnswersRoute
+  '/login': typeof LoginRoute
+  '/mcqs': typeof McqsRoute
+  '/model-questions': typeof ModelQuestionsRoute
+  '/notes': typeof NotesRoute
+  '/past-papers': typeof PastPapersRoute
+  '/privacy': typeof PrivacyRoute
+  '/question-bank': typeof QuestionBankRoute
+  '/terms': typeof TermsRoute
+  '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/contact'
+    | '/exercise-answers'
+    | '/login'
+    | '/mcqs'
+    | '/model-questions'
+    | '/notes'
+    | '/past-papers'
+    | '/privacy'
+    | '/question-bank'
+    | '/terms'
+    | '/subject/$classId/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/contact'
+    | '/exercise-answers'
+    | '/login'
+    | '/mcqs'
+    | '/model-questions'
+    | '/notes'
+    | '/past-papers'
+    | '/privacy'
+    | '/question-bank'
+    | '/terms'
+    | '/subject/$classId/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/blog'
+    | '/contact'
+    | '/exercise-answers'
+    | '/login'
+    | '/mcqs'
+    | '/model-questions'
+    | '/notes'
+    | '/past-papers'
+    | '/privacy'
+    | '/question-bank'
+    | '/terms'
+    | '/subject/$classId/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  BlogRoute: typeof BlogRoute
+  ContactRoute: typeof ContactRoute
+  ExerciseAnswersRoute: typeof ExerciseAnswersRoute
+  LoginRoute: typeof LoginRoute
+  McqsRoute: typeof McqsRoute
+  ModelQuestionsRoute: typeof ModelQuestionsRoute
+  NotesRoute: typeof NotesRoute
+  PastPapersRoute: typeof PastPapersRoute
+  PrivacyRoute: typeof PrivacyRoute
+  QuestionBankRoute: typeof QuestionBankRoute
+  TermsRoute: typeof TermsRoute
+  SubjectClassIdSlugRoute: typeof SubjectClassIdSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +221,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exercise-answers': {
+      id: '/exercise-answers'
+      path: '/exercise-answers'
+      fullPath: '/exercise-answers'
+      preLoaderRoute: typeof ExerciseAnswersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcqs': {
+      id: '/mcqs'
+      path: '/mcqs'
+      fullPath: '/mcqs'
+      preLoaderRoute: typeof McqsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/model-questions': {
+      id: '/model-questions'
+      path: '/model-questions'
+      fullPath: '/model-questions'
+      preLoaderRoute: typeof ModelQuestionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notes': {
+      id: '/notes'
+      path: '/notes'
+      fullPath: '/notes'
+      preLoaderRoute: typeof NotesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/past-papers': {
+      id: '/past-papers'
+      path: '/past-papers'
+      fullPath: '/past-papers'
+      preLoaderRoute: typeof PastPapersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/question-bank': {
+      id: '/question-bank'
+      path: '/question-bank'
+      fullPath: '/question-bank'
+      preLoaderRoute: typeof QuestionBankRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subject/$classId/$slug': {
+      id: '/subject/$classId/$slug'
+      path: '/subject/$classId/$slug'
+      fullPath: '/subject/$classId/$slug'
+      preLoaderRoute: typeof SubjectClassIdSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  BlogRoute: BlogRoute,
+  ContactRoute: ContactRoute,
+  ExerciseAnswersRoute: ExerciseAnswersRoute,
+  LoginRoute: LoginRoute,
+  McqsRoute: McqsRoute,
+  ModelQuestionsRoute: ModelQuestionsRoute,
+  NotesRoute: NotesRoute,
+  PastPapersRoute: PastPapersRoute,
+  PrivacyRoute: PrivacyRoute,
+  QuestionBankRoute: QuestionBankRoute,
+  TermsRoute: TermsRoute,
+  SubjectClassIdSlugRoute: SubjectClassIdSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
