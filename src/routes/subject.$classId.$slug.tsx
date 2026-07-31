@@ -120,7 +120,7 @@ function SubjectPage() {
         <aside className="h-max rounded-2xl border border-border bg-card p-4 lg:sticky lg:top-24">
           <h2 className="px-2 text-sm font-bold">Chapters</h2>
           <ul className="mt-3 space-y-1">
-            {subject.chapters.map((c, i) => (
+            {subject.chapters.map((c: string, i: number) => (
               <li key={c}>
                 <button
                   onClick={() => setChapter(i)}
