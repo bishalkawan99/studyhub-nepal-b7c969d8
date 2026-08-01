@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, Clock, RotateCcw, Trophy, XCircle } from "lucide-react";
+import { toast } from "sonner";
 import { mcqBank, leaderboard } from "@/lib/study-data";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+
 
 export const Route = createFileRoute("/mcqs")({
   head: () => ({
