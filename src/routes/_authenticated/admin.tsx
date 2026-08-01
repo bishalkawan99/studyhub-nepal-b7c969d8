@@ -16,7 +16,9 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { UploadWizard } from "@/components/UploadWizard";
 import { classes, subjects } from "@/lib/study-data";
+
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
