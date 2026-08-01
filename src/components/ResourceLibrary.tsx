@@ -98,6 +98,37 @@ export function ResourceLibrary({
           ))}
         </div>
 
+        {uploadedList.length > 0 && (
+          <div className="mt-8">
+            <h2 className="font-display text-lg font-bold">Latest uploads</h2>
+            <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {uploadedList.map((m) => (
+                <article key={m.id} className="lift rounded-2xl border border-primary/30 bg-card p-6">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <FileText className="h-5 w-5" />
+                  </span>
+                  <h3 className="mt-4 text-sm font-bold">{m.title}</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {subjects.find((s) => s.slug === m.subject_slug)?.name ?? m.subject_slug}
+                    {m.chapter ? ` · ${m.chapter}` : ""}
+                  </p>
+                  {m.description && (
+                    <p className="mt-3 line-clamp-3 text-sm text-muted-foreground">{m.description}</p>
+                  )}
+                  <button
+                    onClick={() => void openFile(m.file_path)}
+                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl brand-gradient px-3 py-2 text-xs font-semibold text-primary-foreground"
+                  >
+                    <Download className="h-4 w-4" /> Open PDF
+                  </button>
+                </article>
+              ))}
+            </div>
+          </div>
+        )}
+
+
+
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((r) => {
             const slug = subjects.find((s) => s.name === r.subject)!.slug;
