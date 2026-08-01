@@ -16,6 +16,7 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { UploadWizard } from "@/components/UploadWizard";
 import { classes, subjects } from "@/lib/study-data";
 
 export const Route = createFileRoute("/_authenticated/admin")({
@@ -115,11 +116,16 @@ function AdminPage() {
   );
 }
 
-function useCount(table: "materials" | "mcq_questions" | "blog_posts" | "profiles" | "page_views" | "contact_messages") {
+function useCount(
+  table:
+    "materials" | "mcq_questions" | "blog_posts" | "profiles" | "page_views" | "contact_messages",
+) {
   return useQuery({
     queryKey: ["count", table],
     queryFn: async () => {
-      const { count, error } = await supabase.from(table).select("id", { count: "exact", head: true });
+      const { count, error } = await supabase
+        .from(table)
+        .select("id", { count: "exact", head: true });
       if (error) throw error;
       return count ?? 0;
     },
@@ -173,7 +179,10 @@ function Overview() {
         {popular.data?.length ? (
           <ul className="mt-4 space-y-2">
             {popular.data.map((m) => (
-              <li key={m.id} className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm">
+              <li
+                key={m.id}
+                className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm"
+              >
                 <span className="min-w-0 truncate">{m.title}</span>
                 <span className="shrink-0 text-xs text-muted-foreground">
                   {m.download_count} downloads · {m.view_count} views
@@ -194,71 +203,21 @@ const fieldClass =
 
 function Materials() {
   const queryClient = useQueryClient();
-  const [classLevel, setClassLevel] = useState<string>("11");
-  const [subjectSlug, setSubjectSlug] = useState(subjects[0].slug);
-  const [chapter, setChapter] = useState("");
-  const [resourceType, setResourceType] = useState<string>(resourceTypes[0]);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [file, setFile] = useState<File | null>(null);
-  const [busy, setBusy] = useState(false);
 
   const list = useQuery({
     queryKey: ["admin-materials"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("materials")
-        .select("id,title,class_level,subject_slug,resource_type,chapter,file_path,is_published,created_at")
+        .select(
+          "id,title,class_level,subject_slug,resource_type,chapter,file_path,is_published,created_at",
+        )
         .order("created_at", { ascending: false })
         .limit(50);
       if (error) throw error;
       return data;
     },
   });
-
-  const upload = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title.trim()) {
-      toast.error("Add a title");
-      return;
-    }
-    setBusy(true);
-    try {
-      let filePath: string | null = null;
-      let fileSize: number | null = null;
-      if (file) {
-        if (file.size > 20 * 1024 * 1024) throw new Error("PDF must be smaller than 20MB");
-        filePath = `${classLevel}/${subjectSlug}/${Date.now()}-${file.name.replace(/[^\w.-]+/g, "-")}`;
-        const { error: uploadError } = await supabase.storage
-          .from("study-materials")
-          .upload(filePath, file, { contentType: file.type || "application/pdf" });
-        if (uploadError) throw uploadError;
-        fileSize = file.size;
-      }
-      const { error } = await supabase.from("materials").insert({
-        class_level: classLevel,
-        subject_slug: subjectSlug,
-        chapter: chapter.trim() || null,
-        resource_type: resourceType,
-        title: title.trim(),
-        description: description.trim() || null,
-        file_path: filePath,
-        file_size: fileSize,
-      });
-      if (error) throw error;
-      toast.success("Material published");
-      setTitle("");
-      setDescription("");
-      setChapter("");
-      setFile(null);
-      void queryClient.invalidateQueries({ queryKey: ["admin-materials"] });
-      void queryClient.invalidateQueries({ queryKey: ["count", "materials"] });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Upload failed");
-    } finally {
-      setBusy(false);
-    }
-  };
 
   const remove = async (id: string, path: string | null) => {
     if (path) await supabase.storage.from("study-materials").remove([path]);
@@ -272,84 +231,24 @@ function Materials() {
   };
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[380px_minmax(0,1fr)]">
-      <form onSubmit={upload} className="rounded-2xl border border-border bg-card p-6">
-        <h2 className="font-display text-lg font-bold">Upload material</h2>
-        <div className="mt-4 grid gap-3">
-          <div className="grid grid-cols-2 gap-3">
-            <label className="text-xs font-semibold">
-              Class
-              <select value={classLevel} onChange={(e) => setClassLevel(e.target.value)} className={fieldClass}>
-                {classes.map((c) => (
-                  <option key={c} value={c}>
-                    Class {c}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="text-xs font-semibold">
-              Type
-              <select value={resourceType} onChange={(e) => setResourceType(e.target.value)} className={fieldClass}>
-                {resourceTypes.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <label className="text-xs font-semibold">
-            Subject
-            <select value={subjectSlug} onChange={(e) => setSubjectSlug(e.target.value)} className={fieldClass}>
-              {subjects.map((s) => (
-                <option key={s.slug} value={s.slug}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="text-xs font-semibold">
-            Chapter (optional)
-            <input value={chapter} onChange={(e) => setChapter(e.target.value)} className={fieldClass} />
-          </label>
-          <label className="text-xs font-semibold">
-            Title
-            <input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={140} className={fieldClass} />
-          </label>
-          <label className="text-xs font-semibold">
-            Description
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={3}
-              maxLength={500}
-              className={fieldClass}
-            />
-          </label>
-          <label className="text-xs font-semibold">
-            PDF file
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-              className={fieldClass}
-            />
-          </label>
-          <button
-            disabled={busy}
-            className="mt-1 inline-flex items-center justify-center gap-2 rounded-full brand-gradient px-5 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-60"
-          >
-            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />} Publish
-          </button>
-        </div>
-      </form>
+    <div className="grid gap-6">
+      <UploadWizard
+        onComplete={() => {
+          void queryClient.invalidateQueries({ queryKey: ["admin-materials"] });
+          void queryClient.invalidateQueries({ queryKey: ["count", "materials"] });
+          void queryClient.invalidateQueries({ queryKey: ["materials"] });
+        }}
+      />
 
       <section className="rounded-2xl border border-border bg-card p-6">
         <h2 className="font-display text-lg font-bold">Published materials</h2>
         {list.data?.length ? (
           <ul className="mt-4 space-y-2">
             {list.data.map((m) => (
-              <li key={m.id} className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3">
+              <li
+                key={m.id}
+                className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3"
+              >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold">{m.title}</p>
                   <p className="truncate text-xs text-muted-foreground">
@@ -436,7 +335,11 @@ function Mcqs() {
           <div className="grid grid-cols-2 gap-3">
             <label className="text-xs font-semibold">
               Class
-              <select value={classLevel} onChange={(e) => setClassLevel(e.target.value)} className={fieldClass}>
+              <select
+                value={classLevel}
+                onChange={(e) => setClassLevel(e.target.value)}
+                className={fieldClass}
+              >
                 {classes.map((c) => (
                   <option key={c} value={c}>
                     Class {c}
@@ -446,7 +349,11 @@ function Mcqs() {
             </label>
             <label className="text-xs font-semibold">
               Subject
-              <select value={subjectSlug} onChange={(e) => setSubjectSlug(e.target.value)} className={fieldClass}>
+              <select
+                value={subjectSlug}
+                onChange={(e) => setSubjectSlug(e.target.value)}
+                className={fieldClass}
+              >
                 {subjects.map((s) => (
                   <option key={s.slug} value={s.slug}>
                     {s.name}
@@ -457,7 +364,12 @@ function Mcqs() {
           </div>
           <label className="text-xs font-semibold">
             Question
-            <textarea value={question} onChange={(e) => setQuestion(e.target.value)} rows={3} className={fieldClass} />
+            <textarea
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              rows={3}
+              className={fieldClass}
+            />
           </label>
           {options.map((o, i) => (
             <label key={i} className="text-xs font-semibold">
@@ -465,14 +377,18 @@ function Mcqs() {
               <div className="flex items-center gap-2">
                 <input
                   value={o}
-                  onChange={(e) => setOptions(options.map((v, idx) => (idx === i ? e.target.value : v)))}
+                  onChange={(e) =>
+                    setOptions(options.map((v, idx) => (idx === i ? e.target.value : v)))
+                  }
                   className={fieldClass}
                 />
                 <button
                   type="button"
                   onClick={() => setCorrect(i)}
                   className={`mt-1 shrink-0 rounded-full px-3 py-2 text-xs font-semibold ${
-                    correct === i ? "brand-gradient text-primary-foreground" : "border border-border text-muted-foreground"
+                    correct === i
+                      ? "brand-gradient text-primary-foreground"
+                      : "border border-border text-muted-foreground"
                   }`}
                 >
                   Correct
@@ -503,7 +419,10 @@ function Mcqs() {
         {list.data?.length ? (
           <ul className="mt-4 space-y-2">
             {list.data.map((q) => (
-              <li key={q.id} className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3">
+              <li
+                key={q.id}
+                className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3"
+              >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium">{q.question}</p>
                   <p className="text-xs text-muted-foreground">
@@ -595,19 +514,38 @@ function Blog() {
         <div className="mt-4 grid gap-3">
           <label className="text-xs font-semibold">
             Title
-            <input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={140} className={fieldClass} />
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength={140}
+              className={fieldClass}
+            />
           </label>
           <label className="text-xs font-semibold">
             Category
-            <input value={category} onChange={(e) => setCategory(e.target.value)} className={fieldClass} />
+            <input
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className={fieldClass}
+            />
           </label>
           <label className="text-xs font-semibold">
             Excerpt
-            <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} className={fieldClass} />
+            <textarea
+              value={excerpt}
+              onChange={(e) => setExcerpt(e.target.value)}
+              rows={2}
+              className={fieldClass}
+            />
           </label>
           <label className="text-xs font-semibold">
             Content
-            <textarea value={content} onChange={(e) => setContent(e.target.value)} rows={6} className={fieldClass} />
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={6}
+              className={fieldClass}
+            />
           </label>
           <button
             disabled={busy}
@@ -623,7 +561,10 @@ function Blog() {
         {list.data?.length ? (
           <ul className="mt-4 space-y-2">
             {list.data.map((p) => (
-              <li key={p.id} className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3">
+              <li
+                key={p.id}
+                className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3"
+              >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold">{p.title}</p>
                   <p className="text-xs text-muted-foreground">
