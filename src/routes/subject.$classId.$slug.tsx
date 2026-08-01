@@ -41,11 +41,15 @@ const tabs = ["Notes", "Exercise Answers", "Important Questions", "MCQs", "Past 
 
 function SubjectPage() {
   const { subject, classId } = Route.useLoaderData();
+  const { user } = useAuth();
   const [tab, setTab] = useState(tabs[0]);
   const [chapter, setChapter] = useState(0);
   const [zoom, setZoom] = useState(100);
   const [bookmarked, setBookmarked] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  const href = `/subject/${classId}/${subject.slug}`;
+  const label = `Class ${classId} ${subject.name}`;
 
   useEffect(() => {
     function onScroll() {
@@ -57,6 +61,49 @@ function SubjectPage() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!user) {
+      setBookmarked(false);
+      return;
+    }
+    let active = true;
+    void supabase
+      .from("bookmarks")
+      .select("id")
+      .eq("href", href)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (active) setBookmarked(Boolean(data));
+      });
+    return () => {
+      active = false;
+    };
+  }, [user, href]);
+
+  async function toggleBookmark() {
+    if (!user) {
+      toast.info("Sign in to save this chapter to your dashboard.");
+      return;
+    }
+    if (bookmarked) {
+      const { error } = await supabase.from("bookmarks").delete().eq("href", href);
+      if (error) {
+        toast.error("Could not remove bookmark");
+        return;
+      }
+      setBookmarked(false);
+      toast.success("Bookmark removed");
+      return;
+    }
+    const { error } = await supabase.from("bookmarks").insert({ user_id: user.id, href, label });
+    if (error) {
+      toast.error("Could not save bookmark");
+      return;
+    }
+    setBookmarked(true);
+    toast.success("Bookmarked for later");
+  }
 
   return (
     <main className="hero-surface">
@@ -82,10 +129,7 @@ function SubjectPage() {
           </div>
           <div className="flex shrink-0 gap-2">
             <button
-              onClick={() => {
-                setBookmarked((v) => !v);
-                toast.success(bookmarked ? "Bookmark removed" : "Bookmarked for later");
-              }}
+              onClick={() => void toggleBookmark()}
               className={`inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border ${
                 bookmarked ? "bg-accent/15 text-accent" : "bg-card text-muted-foreground"
               }`}
@@ -93,6 +137,7 @@ function SubjectPage() {
             >
               <Bookmark className="h-4 w-4" />
             </button>
+
             <button
               onClick={() => {
                 navigator.clipboard?.writeText(window.location.href);
