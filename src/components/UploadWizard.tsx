@@ -134,7 +134,9 @@ export function UploadWizard({ onComplete }: { onComplete?: () => void }) {
 
     for (const item of queue) {
       if (item.status === "done") continue;
-      setQueue((q) => q.map((x) => (x.key === item.key ? { ...x, status: "uploading", progress: 1 } : x)));
+      setQueue((q) =>
+        q.map((x) => (x.key === item.key ? { ...x, status: "uploading", progress: 1 } : x)),
+      );
       const path = `${classLevel}/${subjectSlug}/${resourceType.toLowerCase().replace(/\s+/g, "-")}/${Date.now()}-${safeName(item.file.name)}`;
       try {
         await uploadWithProgress(path, item.file, token, (pct) =>
@@ -154,10 +156,14 @@ export function UploadWizard({ onComplete }: { onComplete?: () => void }) {
           created_by: userId,
         });
         if (error) throw error;
-        setQueue((q) => q.map((x) => (x.key === item.key ? { ...x, status: "done", progress: 100 } : x)));
+        setQueue((q) =>
+          q.map((x) => (x.key === item.key ? { ...x, status: "done", progress: 100 } : x)),
+        );
       } catch (error) {
         const message = error instanceof Error ? error.message : "Upload failed";
-        setQueue((q) => q.map((x) => (x.key === item.key ? { ...x, status: "error", error: message } : x)));
+        setQueue((q) =>
+          q.map((x) => (x.key === item.key ? { ...x, status: "error", error: message } : x)),
+        );
       }
     }
 
@@ -205,7 +211,11 @@ export function UploadWizard({ onComplete }: { onComplete?: () => void }) {
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <label className="text-xs font-semibold">
             Class
-            <select value={classLevel} onChange={(e) => setClassLevel(e.target.value)} className={field}>
+            <select
+              value={classLevel}
+              onChange={(e) => setClassLevel(e.target.value)}
+              className={field}
+            >
               {classes.map((c) => (
                 <option key={c} value={c}>
                   Class {c}
@@ -215,7 +225,11 @@ export function UploadWizard({ onComplete }: { onComplete?: () => void }) {
           </label>
           <label className="text-xs font-semibold">
             Resource type
-            <select value={resourceType} onChange={(e) => setResourceType(e.target.value)} className={field}>
+            <select
+              value={resourceType}
+              onChange={(e) => setResourceType(e.target.value)}
+              className={field}
+            >
               {RESOURCE_TYPES.map((t) => (
                 <option key={t} value={t}>
                   {t}
@@ -253,7 +267,12 @@ export function UploadWizard({ onComplete }: { onComplete?: () => void }) {
           </label>
           <label className="text-xs font-semibold">
             Year (for past papers)
-            <input value={year} onChange={(e) => setYear(e.target.value)} maxLength={9} className={field} />
+            <input
+              value={year}
+              onChange={(e) => setYear(e.target.value)}
+              maxLength={9}
+              className={field}
+            />
           </label>
           <label className="text-xs font-semibold">
             Shared description
@@ -278,7 +297,10 @@ export function UploadWizard({ onComplete }: { onComplete?: () => void }) {
       {step === 1 && (
         <div className="mt-6">
           <p className="text-xs text-muted-foreground">
-            Publishing to <span className="font-semibold text-foreground">Class {classLevel} · {subject.name} · {resourceType}</span>
+            Publishing to{" "}
+            <span className="font-semibold text-foreground">
+              Class {classLevel} · {subject.name} · {resourceType}
+            </span>
             {chapter ? ` · ${chapter}` : ""}
           </p>
 
@@ -319,7 +341,10 @@ export function UploadWizard({ onComplete }: { onComplete?: () => void }) {
           {queue.length > 0 && (
             <ul className="mt-4 space-y-2">
               {queue.map((q) => (
-                <li key={q.key} className="flex items-center gap-3 rounded-xl border border-border px-4 py-3">
+                <li
+                  key={q.key}
+                  className="flex items-center gap-3 rounded-xl border border-border px-4 py-3"
+                >
                   {q.file.type === "application/pdf" ? (
                     <FileText className="h-5 w-5 shrink-0 text-primary" />
                   ) : (
@@ -376,7 +401,10 @@ export function UploadWizard({ onComplete }: { onComplete?: () => void }) {
             <span>{totalProgress}%</span>
           </div>
           <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
-            <div className="h-full brand-gradient transition-all" style={{ width: `${totalProgress}%` }} />
+            <div
+              className="h-full brand-gradient transition-all"
+              style={{ width: `${totalProgress}%` }}
+            />
           </div>
 
           <ul className="mt-4 space-y-2">

@@ -19,7 +19,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { UploadWizard } from "@/components/UploadWizard";
 import { classes, subjects } from "@/lib/study-data";
 
-
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
     meta: [
@@ -117,11 +116,16 @@ function AdminPage() {
   );
 }
 
-function useCount(table: "materials" | "mcq_questions" | "blog_posts" | "profiles" | "page_views" | "contact_messages") {
+function useCount(
+  table:
+    "materials" | "mcq_questions" | "blog_posts" | "profiles" | "page_views" | "contact_messages",
+) {
   return useQuery({
     queryKey: ["count", table],
     queryFn: async () => {
-      const { count, error } = await supabase.from(table).select("id", { count: "exact", head: true });
+      const { count, error } = await supabase
+        .from(table)
+        .select("id", { count: "exact", head: true });
       if (error) throw error;
       return count ?? 0;
     },
@@ -175,7 +179,10 @@ function Overview() {
         {popular.data?.length ? (
           <ul className="mt-4 space-y-2">
             {popular.data.map((m) => (
-              <li key={m.id} className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm">
+              <li
+                key={m.id}
+                className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm"
+              >
                 <span className="min-w-0 truncate">{m.title}</span>
                 <span className="shrink-0 text-xs text-muted-foreground">
                   {m.download_count} downloads · {m.view_count} views
@@ -202,14 +209,15 @@ function Materials() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("materials")
-        .select("id,title,class_level,subject_slug,resource_type,chapter,file_path,is_published,created_at")
+        .select(
+          "id,title,class_level,subject_slug,resource_type,chapter,file_path,is_published,created_at",
+        )
         .order("created_at", { ascending: false })
         .limit(50);
       if (error) throw error;
       return data;
     },
   });
-
 
   const remove = async (id: string, path: string | null) => {
     if (path) await supabase.storage.from("study-materials").remove([path]);
@@ -232,14 +240,15 @@ function Materials() {
         }}
       />
 
-
-
       <section className="rounded-2xl border border-border bg-card p-6">
         <h2 className="font-display text-lg font-bold">Published materials</h2>
         {list.data?.length ? (
           <ul className="mt-4 space-y-2">
             {list.data.map((m) => (
-              <li key={m.id} className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3">
+              <li
+                key={m.id}
+                className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3"
+              >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold">{m.title}</p>
                   <p className="truncate text-xs text-muted-foreground">
@@ -326,7 +335,11 @@ function Mcqs() {
           <div className="grid grid-cols-2 gap-3">
             <label className="text-xs font-semibold">
               Class
-              <select value={classLevel} onChange={(e) => setClassLevel(e.target.value)} className={fieldClass}>
+              <select
+                value={classLevel}
+                onChange={(e) => setClassLevel(e.target.value)}
+                className={fieldClass}
+              >
                 {classes.map((c) => (
                   <option key={c} value={c}>
                     Class {c}
@@ -336,7 +349,11 @@ function Mcqs() {
             </label>
             <label className="text-xs font-semibold">
               Subject
-              <select value={subjectSlug} onChange={(e) => setSubjectSlug(e.target.value)} className={fieldClass}>
+              <select
+                value={subjectSlug}
+                onChange={(e) => setSubjectSlug(e.target.value)}
+                className={fieldClass}
+              >
                 {subjects.map((s) => (
                   <option key={s.slug} value={s.slug}>
                     {s.name}
@@ -347,7 +364,12 @@ function Mcqs() {
           </div>
           <label className="text-xs font-semibold">
             Question
-            <textarea value={question} onChange={(e) => setQuestion(e.target.value)} rows={3} className={fieldClass} />
+            <textarea
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              rows={3}
+              className={fieldClass}
+            />
           </label>
           {options.map((o, i) => (
             <label key={i} className="text-xs font-semibold">
@@ -355,14 +377,18 @@ function Mcqs() {
               <div className="flex items-center gap-2">
                 <input
                   value={o}
-                  onChange={(e) => setOptions(options.map((v, idx) => (idx === i ? e.target.value : v)))}
+                  onChange={(e) =>
+                    setOptions(options.map((v, idx) => (idx === i ? e.target.value : v)))
+                  }
                   className={fieldClass}
                 />
                 <button
                   type="button"
                   onClick={() => setCorrect(i)}
                   className={`mt-1 shrink-0 rounded-full px-3 py-2 text-xs font-semibold ${
-                    correct === i ? "brand-gradient text-primary-foreground" : "border border-border text-muted-foreground"
+                    correct === i
+                      ? "brand-gradient text-primary-foreground"
+                      : "border border-border text-muted-foreground"
                   }`}
                 >
                   Correct
@@ -393,7 +419,10 @@ function Mcqs() {
         {list.data?.length ? (
           <ul className="mt-4 space-y-2">
             {list.data.map((q) => (
-              <li key={q.id} className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3">
+              <li
+                key={q.id}
+                className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3"
+              >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium">{q.question}</p>
                   <p className="text-xs text-muted-foreground">
@@ -485,19 +514,38 @@ function Blog() {
         <div className="mt-4 grid gap-3">
           <label className="text-xs font-semibold">
             Title
-            <input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={140} className={fieldClass} />
+            <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength={140}
+              className={fieldClass}
+            />
           </label>
           <label className="text-xs font-semibold">
             Category
-            <input value={category} onChange={(e) => setCategory(e.target.value)} className={fieldClass} />
+            <input
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className={fieldClass}
+            />
           </label>
           <label className="text-xs font-semibold">
             Excerpt
-            <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} className={fieldClass} />
+            <textarea
+              value={excerpt}
+              onChange={(e) => setExcerpt(e.target.value)}
+              rows={2}
+              className={fieldClass}
+            />
           </label>
           <label className="text-xs font-semibold">
             Content
-            <textarea value={content} onChange={(e) => setContent(e.target.value)} rows={6} className={fieldClass} />
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={6}
+              className={fieldClass}
+            />
           </label>
           <button
             disabled={busy}
@@ -513,7 +561,10 @@ function Blog() {
         {list.data?.length ? (
           <ul className="mt-4 space-y-2">
             {list.data.map((p) => (
-              <li key={p.id} className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3">
+              <li
+                key={p.id}
+                className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3"
+              >
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold">{p.title}</p>
                   <p className="text-xs text-muted-foreground">
