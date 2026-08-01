@@ -87,7 +87,7 @@ export function Navbar() {
       {open && (
         <div className="glass border-t border-border xl:hidden">
           <ul className="mx-auto grid max-w-7xl gap-1 px-4 py-3">
-            {[...links, { to: "/login", label: "Login" } as const].map((l) => (
+            {[...links, ...(user ? ([{ to: "/dashboard", label: "My dashboard" }] as const) : ([{ to: "/auth", label: "Login" }] as const))].map((l) => (
               <li key={l.to}>
                 <Link
                   to={l.to}
@@ -98,9 +98,23 @@ export function Navbar() {
                 </Link>
               </li>
             ))}
+            {user && (
+              <li>
+                <button
+                  onClick={() => {
+                    setOpen(false);
+                    void signOut();
+                  }}
+                  className="block w-full rounded-xl px-3 py-2 text-left text-sm font-medium text-muted-foreground hover:bg-muted"
+                >
+                  Sign out
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       )}
+
     </header>
   );
 }
