@@ -67,12 +67,32 @@ export function Navbar() {
             ))}
           </ul>
           <ThemeToggle />
-          <Link
-            to="/login"
-            className="hidden rounded-full brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-105 sm:inline-flex"
-          >
-            Login
-          </Link>
+          {user ? (
+            <div className="hidden items-center gap-2 sm:flex">
+              <Link
+                to="/dashboard"
+                className="inline-flex items-center gap-2 rounded-full brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-105"
+              >
+                <LayoutDashboard className="h-4 w-4" /> Dashboard
+              </Link>
+              <button
+                type="button"
+                onClick={() => void signOut()}
+                aria-label="Sign out"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:text-primary"
+              >
+                <LogOut className="h-4 w-4" />
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/auth"
+              className="hidden rounded-full brand-gradient px-4 py-2 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-105 sm:inline-flex"
+            >
+              Login
+            </Link>
+          )}
+
           <button
             type="button"
             aria-label="Toggle menu"
