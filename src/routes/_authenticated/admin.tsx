@@ -194,14 +194,6 @@ const fieldClass =
 
 function Materials() {
   const queryClient = useQueryClient();
-  const [classLevel, setClassLevel] = useState<string>("11");
-  const [subjectSlug, setSubjectSlug] = useState(subjects[0].slug);
-  const [chapter, setChapter] = useState("");
-  const [resourceType, setResourceType] = useState<string>(resourceTypes[0]);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [file, setFile] = useState<File | null>(null);
-  const [busy, setBusy] = useState(false);
 
   const list = useQuery({
     queryKey: ["admin-materials"],
@@ -216,49 +208,6 @@ function Materials() {
     },
   });
 
-  const upload = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title.trim()) {
-      toast.error("Add a title");
-      return;
-    }
-    setBusy(true);
-    try {
-      let filePath: string | null = null;
-      let fileSize: number | null = null;
-      if (file) {
-        if (file.size > 20 * 1024 * 1024) throw new Error("PDF must be smaller than 20MB");
-        filePath = `${classLevel}/${subjectSlug}/${Date.now()}-${file.name.replace(/[^\w.-]+/g, "-")}`;
-        const { error: uploadError } = await supabase.storage
-          .from("study-materials")
-          .upload(filePath, file, { contentType: file.type || "application/pdf" });
-        if (uploadError) throw uploadError;
-        fileSize = file.size;
-      }
-      const { error } = await supabase.from("materials").insert({
-        class_level: classLevel,
-        subject_slug: subjectSlug,
-        chapter: chapter.trim() || null,
-        resource_type: resourceType,
-        title: title.trim(),
-        description: description.trim() || null,
-        file_path: filePath,
-        file_size: fileSize,
-      });
-      if (error) throw error;
-      toast.success("Material published");
-      setTitle("");
-      setDescription("");
-      setChapter("");
-      setFile(null);
-      void queryClient.invalidateQueries({ queryKey: ["admin-materials"] });
-      void queryClient.invalidateQueries({ queryKey: ["count", "materials"] });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Upload failed");
-    } finally {
-      setBusy(false);
-    }
-  };
 
   const remove = async (id: string, path: string | null) => {
     if (path) await supabase.storage.from("study-materials").remove([path]);
