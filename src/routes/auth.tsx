@@ -28,7 +28,7 @@ export const Route = createFileRoute("/auth")({
       },
     ],
   }),
-  component: AuthPage;
+  component: AuthPage,
 });
 
 const credentials = z.object({
