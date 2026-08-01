@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Download, Eye, FileText } from "lucide-react";
+import { toast } from "sonner";
 import { classes, subjects, buildResources } from "@/lib/study-data";
+import { supabase } from "@/integrations/supabase/client";
 import { SearchBar } from "./SearchBar";
 
 export function ResourceLibrary({
@@ -17,9 +20,42 @@ export function ResourceLibrary({
   const [activeSubject, setActiveSubject] = useState<string>("all");
   const all = useMemo(() => buildResources(kind), [kind]);
 
+  const uploaded = useQuery({
+    queryKey: ["materials", kind, activeClass],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("materials")
+        .select("id,title,description,chapter,subject_slug,file_path")
+        .eq("resource_type", kind)
+        .eq("class_level", activeClass)
+        .eq("is_published", true)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const openFile = async (path: string | null) => {
+    if (!path) {
+      toast.info("This material has no file attached yet.");
+      return;
+    }
+    const { data, error } = await supabase.storage.from("study-materials").createSignedUrl(path, 60 * 10);
+    if (error || !data) {
+      toast.error("Sign in to open this PDF.");
+      return;
+    }
+    window.open(data.signedUrl, "_blank", "noopener");
+  };
+
+  const uploadedList = (uploaded.data ?? []).filter(
+    (m) => activeSubject === "all" || subjects.find((s) => s.slug === m.subject_slug)?.name === activeSubject,
+  );
+
   const filtered = all.filter(
     (r) => r.classId === activeClass && (activeSubject === "all" || r.subject === activeSubject),
   );
+
 
   return (
     <main className="hero-surface">
