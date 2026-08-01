@@ -272,77 +272,16 @@ function Materials() {
   };
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[380px_minmax(0,1fr)]">
-      <form onSubmit={upload} className="rounded-2xl border border-border bg-card p-6">
-        <h2 className="font-display text-lg font-bold">Upload material</h2>
-        <div className="mt-4 grid gap-3">
-          <div className="grid grid-cols-2 gap-3">
-            <label className="text-xs font-semibold">
-              Class
-              <select value={classLevel} onChange={(e) => setClassLevel(e.target.value)} className={fieldClass}>
-                {classes.map((c) => (
-                  <option key={c} value={c}>
-                    Class {c}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="text-xs font-semibold">
-              Type
-              <select value={resourceType} onChange={(e) => setResourceType(e.target.value)} className={fieldClass}>
-                {resourceTypes.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <label className="text-xs font-semibold">
-            Subject
-            <select value={subjectSlug} onChange={(e) => setSubjectSlug(e.target.value)} className={fieldClass}>
-              {subjects.map((s) => (
-                <option key={s.slug} value={s.slug}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="text-xs font-semibold">
-            Chapter (optional)
-            <input value={chapter} onChange={(e) => setChapter(e.target.value)} className={fieldClass} />
-          </label>
-          <label className="text-xs font-semibold">
-            Title
-            <input value={title} onChange={(e) => setTitle(e.target.value)} maxLength={140} className={fieldClass} />
-          </label>
-          <label className="text-xs font-semibold">
-            Description
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={3}
-              maxLength={500}
-              className={fieldClass}
-            />
-          </label>
-          <label className="text-xs font-semibold">
-            PDF file
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-              className={fieldClass}
-            />
-          </label>
-          <button
-            disabled={busy}
-            className="mt-1 inline-flex items-center justify-center gap-2 rounded-full brand-gradient px-5 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-60"
-          >
-            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />} Publish
-          </button>
-        </div>
-      </form>
+    <div className="grid gap-6">
+      <UploadWizard
+        onComplete={() => {
+          void queryClient.invalidateQueries({ queryKey: ["admin-materials"] });
+          void queryClient.invalidateQueries({ queryKey: ["count", "materials"] });
+          void queryClient.invalidateQueries({ queryKey: ["materials"] });
+        }}
+      />
+
+
 
       <section className="rounded-2xl border border-border bg-card p-6">
         <h2 className="font-display text-lg font-bold">Published materials</h2>
