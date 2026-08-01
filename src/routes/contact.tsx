@@ -2,6 +2,8 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Facebook, Instagram, Mail, MapPin, Youtube } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+
 import { z } from "zod";
 
 export const Route = createFileRoute("/contact")({
