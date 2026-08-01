@@ -43,12 +43,24 @@ function McqPage() {
   const score = answers.filter((a, i) => a === mcqBank[i].answer).length;
   const answered = answers.filter((a) => a !== null).length;
 
+  useEffect(() => {
+    if (!finished || !user) return;
+    void supabase
+      .from("quiz_attempts")
+      .insert({ user_id: user.id, score, total: mcqBank.length, class_level: "11", subject_slug: null })
+      .then(({ error }) => {
+        if (!error) toast.success("Attempt saved to your dashboard");
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [finished, user?.id]);
+
   function reset() {
     setAnswers(mcqBank.map(() => null));
     setTime(DURATION);
     setFinished(false);
     setStarted(true);
   }
+
 
   return (
     <main className="hero-surface">
