@@ -11,6 +11,9 @@ import {
   FileText,
 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+
 import { getSubject, subjects } from "@/lib/study-data";
 import { SubjectIcon } from "@/components/SubjectIcon";
 
