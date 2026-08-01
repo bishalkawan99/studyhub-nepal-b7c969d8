@@ -25,7 +25,9 @@ export const Route = createFileRoute("/mcqs")({
 const DURATION = 180;
 
 function McqPage() {
+  const { user } = useAuth();
   const [started, setStarted] = useState(false);
+
   const [finished, setFinished] = useState(false);
   const [answers, setAnswers] = useState<(number | null)[]>(mcqBank.map(() => null));
   const [time, setTime] = useState(DURATION);
