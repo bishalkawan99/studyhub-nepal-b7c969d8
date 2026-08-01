@@ -2,6 +2,8 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Facebook, Instagram, Mail, MapPin, Youtube } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+
 import { z } from "zod";
 
 export const Route = createFileRoute("/contact")({
@@ -35,9 +37,10 @@ const faqs = [
 function Contact() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const form = new FormData(e.currentTarget);
+    const formEl = e.currentTarget;
+    const form = new FormData(formEl);
     const parsed = schema.safeParse(Object.fromEntries(form));
     if (!parsed.success) {
       const next: Record<string, string> = {};
@@ -46,9 +49,20 @@ function Contact() {
       return;
     }
     setErrors({});
-    e.currentTarget.reset();
+    const { error } = await supabase.from("contact_messages").insert({
+      name: parsed.data.name,
+      email: parsed.data.email,
+      subject: "subject" in parsed.data ? (parsed.data as { subject?: string }).subject ?? null : null,
+      message: parsed.data.message,
+    });
+    if (error) {
+      toast.error("Could not send your message. Please try again.");
+      return;
+    }
+    formEl.reset();
     toast.success("Message sent! We usually reply within a day.");
   }
+
 
   return (
     <main className="hero-surface">

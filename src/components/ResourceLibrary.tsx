@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Download, Eye, FileText } from "lucide-react";
+import { toast } from "sonner";
 import { classes, subjects, buildResources } from "@/lib/study-data";
+import { supabase } from "@/integrations/supabase/client";
 import { SearchBar } from "./SearchBar";
 
 export function ResourceLibrary({
@@ -17,9 +20,42 @@ export function ResourceLibrary({
   const [activeSubject, setActiveSubject] = useState<string>("all");
   const all = useMemo(() => buildResources(kind), [kind]);
 
+  const uploaded = useQuery({
+    queryKey: ["materials", kind, activeClass],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("materials")
+        .select("id,title,description,chapter,subject_slug,file_path")
+        .eq("resource_type", kind)
+        .eq("class_level", activeClass)
+        .eq("is_published", true)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const openFile = async (path: string | null) => {
+    if (!path) {
+      toast.info("This material has no file attached yet.");
+      return;
+    }
+    const { data, error } = await supabase.storage.from("study-materials").createSignedUrl(path, 60 * 10);
+    if (error || !data) {
+      toast.error("Sign in to open this PDF.");
+      return;
+    }
+    window.open(data.signedUrl, "_blank", "noopener");
+  };
+
+  const uploadedList = (uploaded.data ?? []).filter(
+    (m) => activeSubject === "all" || subjects.find((s) => s.slug === m.subject_slug)?.name === activeSubject,
+  );
+
   const filtered = all.filter(
     (r) => r.classId === activeClass && (activeSubject === "all" || r.subject === activeSubject),
   );
+
 
   return (
     <main className="hero-surface">
@@ -61,6 +97,37 @@ export function ResourceLibrary({
             </button>
           ))}
         </div>
+
+        {uploadedList.length > 0 && (
+          <div className="mt-8">
+            <h2 className="font-display text-lg font-bold">Latest uploads</h2>
+            <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {uploadedList.map((m) => (
+                <article key={m.id} className="lift rounded-2xl border border-primary/30 bg-card p-6">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <FileText className="h-5 w-5" />
+                  </span>
+                  <h3 className="mt-4 text-sm font-bold">{m.title}</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {subjects.find((s) => s.slug === m.subject_slug)?.name ?? m.subject_slug}
+                    {m.chapter ? ` · ${m.chapter}` : ""}
+                  </p>
+                  {m.description && (
+                    <p className="mt-3 line-clamp-3 text-sm text-muted-foreground">{m.description}</p>
+                  )}
+                  <button
+                    onClick={() => void openFile(m.file_path)}
+                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl brand-gradient px-3 py-2 text-xs font-semibold text-primary-foreground"
+                  >
+                    <Download className="h-4 w-4" /> Open PDF
+                  </button>
+                </article>
+              ))}
+            </div>
+          </div>
+        )}
+
+
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((r) => {
