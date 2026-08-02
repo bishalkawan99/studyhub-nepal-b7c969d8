@@ -7,11 +7,20 @@ export const Route = createFileRoute("/exercise-answers")({
       { title: "Exercise Answers & Solutions — StudyHub Nepal" },
       {
         name: "description",
-        content: "Step-by-step textbook exercise answers with explanations for Class 11 and 12 subjects.",
+        content:
+          "Step-by-step textbook exercise answers with explanations for Class 11 and 12 subjects.",
       },
       { property: "og:title", content: "Exercise Answers & Solutions — StudyHub Nepal" },
-      { property: "og:description", content: "Every textbook exercise solved with clear explanations." },
+      {
+        property: "og:description",
+        content: "Every textbook exercise solved with clear explanations.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/exercise-answers" },
+      { property: "og:site_name", content: "StudyHub Nepal" },
+      { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: "/exercise-answers" }],
   }),
   component: () => (
     <ResourceLibrary

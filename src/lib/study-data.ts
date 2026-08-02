@@ -7,14 +7,7 @@ export type Subject = {
 };
 
 const chapterSets: Record<string, string[]> = {
-  nepali: [
-    "गद्य खण्ड – परिचय",
-    "कविता खण्ड",
-    "निबन्ध लेखन",
-    "व्याकरण",
-    "पत्र लेखन",
-    "समालोचना",
-  ],
+  nepali: ["गद्य खण्ड – परिचय", "कविता खण्ड", "निबन्ध लेखन", "व्याकरण", "पत्र लेखन", "समालोचना"],
   english: [
     "Short Stories",
     "Poems",
@@ -108,7 +101,12 @@ const chapterSets: Record<string, string[]> = {
 export const subjects: Subject[] = [
   { slug: "nepali", name: "Nepali", icon: "📖", blurb: "गद्य, कविता, व्याकरण र निबन्ध" },
   { slug: "english", name: "English", icon: "✍️", blurb: "Stories, poems and writing skills" },
-  { slug: "mathematics", name: "Compulsory Mathematics", icon: "📐", blurb: "Calculus, algebra and vectors" },
+  {
+    slug: "mathematics",
+    name: "Compulsory Mathematics",
+    icon: "📐",
+    blurb: "Calculus, algebra and vectors",
+  },
   { slug: "physics", name: "Physics", icon: "🧲", blurb: "Mechanics, heat, optics and more" },
   { slug: "chemistry", name: "Chemistry", icon: "⚗️", blurb: "Physical, organic and inorganic" },
   { slug: "biology", name: "Biology", icon: "🧬", blurb: "Botany, zoology and genetics" },
@@ -163,14 +161,16 @@ export const blogPosts = [
     slug: "study-tips",
     title: "10 Study Techniques That Actually Work for NEB Students",
     category: "Study Tips",
-    excerpt: "Active recall, spaced repetition and how to build a routine that survives load-shedding.",
+    excerpt:
+      "Active recall, spaced repetition and how to build a routine that survives load-shedding.",
     date: "2026-07-12",
   },
   {
     slug: "exam-preparation",
     title: "NEB Board Exam Preparation Plan: Last 60 Days",
     category: "Exam Preparation",
-    excerpt: "A week-by-week revision plan for Class 12 students across science and management streams.",
+    excerpt:
+      "A week-by-week revision plan for Class 12 students across science and management streams.",
     date: "2026-06-28",
   },
   {

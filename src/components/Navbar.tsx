@@ -8,13 +8,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { ThemeToggle } from "./ThemeToggle";
 
-
 const links = [
   { to: "/", label: "Home" },
   { to: "/notes", label: "Notes" },
   { to: "/exercise-answers", label: "Exercise Answers" },
   { to: "/question-bank", label: "Question Bank" },
   { to: "/mcqs", label: "MCQs" },
+  { to: "/gpa-calculator", label: "GPA Calculator" },
   { to: "/model-questions", label: "Model Questions" },
   { to: "/past-papers", label: "Past Papers" },
   { to: "/blog", label: "Blog" },
@@ -38,7 +38,6 @@ export function Navbar() {
     navigate({ to: "/auth", replace: true });
   }
 
-
   useEffect(() => {
     function onScroll() {
       setScrolled(window.scrollY > 8);
@@ -57,7 +56,13 @@ export function Navbar() {
     >
       <nav className="mx-auto grid max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-3 lg:px-8">
         <Link to="/" className="flex min-w-0 shrink-0 items-center gap-2">
-          <img src={logo} alt="StudyHub Nepal logo" width={40} height={40} className="h-9 w-9 shrink-0" />
+          <img
+            src={logo}
+            alt="StudyHub Nepal logo"
+            width={40}
+            height={40}
+            className="h-9 w-9 shrink-0"
+          />
           <span className="truncate whitespace-nowrap font-display text-lg font-extrabold">
             StudyHub <span className="brand-gradient-text">Nepal</span>
           </span>
@@ -119,7 +124,12 @@ export function Navbar() {
       {open && (
         <div className="glass border-t border-border xl:hidden">
           <ul className="mx-auto grid max-w-7xl gap-1 px-4 py-3">
-            {[...links, ...(user ? ([{ to: "/dashboard", label: "My dashboard" }] as const) : ([{ to: "/auth", label: "Login" }] as const))].map((l) => (
+            {[
+              ...links,
+              ...(user
+                ? ([{ to: "/dashboard", label: "My dashboard" }] as const)
+                : ([{ to: "/auth", label: "Login" }] as const)),
+            ].map((l) => (
               <li key={l.to}>
                 <Link
                   to={l.to}
@@ -146,7 +156,6 @@ export function Navbar() {
           </ul>
         </div>
       )}
-
     </header>
   );
 }

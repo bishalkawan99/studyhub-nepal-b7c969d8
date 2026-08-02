@@ -16,6 +16,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ExerciseAnswersRouteImport } from './routes/exercise-answers'
+import { Route as GpaCalculatorRouteImport } from './routes/gpa-calculator'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as McqsRouteImport } from './routes/mcqs'
 import { Route as ModelQuestionsRouteImport } from './routes/model-questions'
@@ -23,6 +24,7 @@ import { Route as NotesRouteImport } from './routes/notes'
 import { Route as PastPapersRouteImport } from './routes/past-papers'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QuestionBankRouteImport } from './routes/question-bank'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -62,6 +64,11 @@ const ExerciseAnswersRoute = ExerciseAnswersRouteImport.update({
   path: '/exercise-answers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GpaCalculatorRoute = GpaCalculatorRouteImport.update({
+  id: '/gpa-calculator',
+  path: '/gpa-calculator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -97,6 +104,11 @@ const QuestionBankRoute = QuestionBankRouteImport.update({
   path: '/question-bank',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -125,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/exercise-answers': typeof ExerciseAnswersRoute
+  '/gpa-calculator': typeof GpaCalculatorRoute
   '/login': typeof LoginRoute
   '/mcqs': typeof McqsRoute
   '/model-questions': typeof ModelQuestionsRoute
@@ -132,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/past-papers': typeof PastPapersRoute
   '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -144,6 +158,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/exercise-answers': typeof ExerciseAnswersRoute
+  '/gpa-calculator': typeof GpaCalculatorRoute
   '/login': typeof LoginRoute
   '/mcqs': typeof McqsRoute
   '/model-questions': typeof ModelQuestionsRoute
@@ -151,6 +166,7 @@ export interface FileRoutesByTo {
   '/past-papers': typeof PastPapersRoute
   '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -165,6 +181,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/exercise-answers': typeof ExerciseAnswersRoute
+  '/gpa-calculator': typeof GpaCalculatorRoute
   '/login': typeof LoginRoute
   '/mcqs': typeof McqsRoute
   '/model-questions': typeof ModelQuestionsRoute
@@ -172,6 +189,7 @@ export interface FileRoutesById {
   '/past-papers': typeof PastPapersRoute
   '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -186,6 +204,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/exercise-answers'
+    | '/gpa-calculator'
     | '/login'
     | '/mcqs'
     | '/model-questions'
@@ -193,6 +212,7 @@ export interface FileRouteTypes {
     | '/past-papers'
     | '/privacy'
     | '/question-bank'
+    | '/sitemap.xml'
     | '/terms'
     | '/admin'
     | '/dashboard'
@@ -205,6 +225,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/exercise-answers'
+    | '/gpa-calculator'
     | '/login'
     | '/mcqs'
     | '/model-questions'
@@ -212,6 +233,7 @@ export interface FileRouteTypes {
     | '/past-papers'
     | '/privacy'
     | '/question-bank'
+    | '/sitemap.xml'
     | '/terms'
     | '/admin'
     | '/dashboard'
@@ -225,6 +247,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/exercise-answers'
+    | '/gpa-calculator'
     | '/login'
     | '/mcqs'
     | '/model-questions'
@@ -232,6 +255,7 @@ export interface FileRouteTypes {
     | '/past-papers'
     | '/privacy'
     | '/question-bank'
+    | '/sitemap.xml'
     | '/terms'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
@@ -246,6 +270,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
   ExerciseAnswersRoute: typeof ExerciseAnswersRoute
+  GpaCalculatorRoute: typeof GpaCalculatorRoute
   LoginRoute: typeof LoginRoute
   McqsRoute: typeof McqsRoute
   ModelQuestionsRoute: typeof ModelQuestionsRoute
@@ -253,6 +278,7 @@ export interface RootRouteChildren {
   PastPapersRoute: typeof PastPapersRoute
   PrivacyRoute: typeof PrivacyRoute
   QuestionBankRoute: typeof QuestionBankRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   SubjectClassIdSlugRoute: typeof SubjectClassIdSlugRoute
 }
@@ -308,6 +334,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExerciseAnswersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/gpa-calculator': {
+      id: '/gpa-calculator'
+      path: '/gpa-calculator'
+      fullPath: '/gpa-calculator'
+      preLoaderRoute: typeof GpaCalculatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -355,6 +388,13 @@ declare module '@tanstack/react-router' {
       path: '/question-bank'
       fullPath: '/question-bank'
       preLoaderRoute: typeof QuestionBankRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -409,6 +449,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
   ExerciseAnswersRoute: ExerciseAnswersRoute,
+  GpaCalculatorRoute: GpaCalculatorRoute,
   LoginRoute: LoginRoute,
   McqsRoute: McqsRoute,
   ModelQuestionsRoute: ModelQuestionsRoute,
@@ -416,19 +457,10 @@ const rootRouteChildren: RootRouteChildren = {
   PastPapersRoute: PastPapersRoute,
   PrivacyRoute: PrivacyRoute,
   QuestionBankRoute: QuestionBankRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   SubjectClassIdSlugRoute: SubjectClassIdSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

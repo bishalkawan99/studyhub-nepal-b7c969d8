@@ -10,8 +10,16 @@ export const Route = createFileRoute("/model-questions")({
         content: "NEB-pattern model question sets for Class 11 and Class 12 with answer keys.",
       },
       { property: "og:title", content: "Model Questions — StudyHub Nepal" },
-      { property: "og:description", content: "Practise with model sets that match the real NEB paper." },
+      {
+        property: "og:description",
+        content: "Practise with model sets that match the real NEB paper.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/model-questions" },
+      { property: "og:site_name", content: "StudyHub Nepal" },
+      { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: "/model-questions" }],
   }),
   component: () => (
     <ResourceLibrary
