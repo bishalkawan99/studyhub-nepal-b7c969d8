@@ -10,8 +10,16 @@ export const Route = createFileRoute("/question-bank")({
         content: "Important questions collected chapter-wise for NEB Class 11 and Class 12 exams.",
       },
       { property: "og:title", content: "Question Bank — StudyHub Nepal" },
-      { property: "og:description", content: "Chapter-wise important questions for board exam revision." },
+      {
+        property: "og:description",
+        content: "Chapter-wise important questions for board exam revision.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/question-bank" },
+      { property: "og:site_name", content: "StudyHub Nepal" },
+      { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: "/question-bank" }],
   }),
   component: () => (
     <ResourceLibrary

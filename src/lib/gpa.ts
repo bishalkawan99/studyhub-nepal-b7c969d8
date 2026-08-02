@@ -56,11 +56,18 @@ export type GpaSummary = {
   finalResult: "Passed" | "Not Graded";
 };
 
-export function gradeFromPercentage(percentage: number, boundaries: GradeBoundary[]): GradeBoundary | null {
+export function gradeFromPercentage(
+  percentage: number,
+  boundaries: GradeBoundary[],
+): GradeBoundary | null {
   const ordered = [...boundaries]
     .filter((b) => b.min_percentage !== null)
     .sort((a, b) => (b.min_percentage ?? 0) - (a.min_percentage ?? 0));
-  return ordered.find((b) => percentage >= (b.min_percentage ?? 0)) ?? ordered[ordered.length - 1] ?? null;
+  return (
+    ordered.find((b) => percentage >= (b.min_percentage ?? 0)) ??
+    ordered[ordered.length - 1] ??
+    null
+  );
 }
 
 export function gradeFromGpa(gpa: number, boundaries: GradeBoundary[]): GradeBoundary | null {
@@ -94,7 +101,8 @@ export function evaluateSubjectByMarks(
     errors.push(`Enter ${subject.practical_label.toLowerCase()} marks`);
   }
   if (theoryRaw !== null && theoryRaw < 0) errors.push("Theory marks cannot be negative");
-  if (practicalRaw !== null && practicalRaw < 0) errors.push("Practical/internal marks cannot be negative");
+  if (practicalRaw !== null && practicalRaw < 0)
+    errors.push("Practical/internal marks cannot be negative");
   if (theoryRaw !== null && theoryRaw > subject.theory_full_marks) {
     errors.push(`Theory marks cannot exceed ${subject.theory_full_marks}`);
   }
@@ -111,7 +119,8 @@ export function evaluateSubjectByMarks(
   const theoryPassMarks = subject.theory_full_marks * (theoryPassingPercentage / 100);
   const practicalPassMarks = subject.practical_full_marks * (practicalPassingPercentage / 100);
   const theoryPassed = theoryRaw !== null && theoryObtained >= theoryPassMarks;
-  const practicalPassed = subject.practical_full_marks === 0 || practicalObtained >= practicalPassMarks;
+  const practicalPassed =
+    subject.practical_full_marks === 0 || practicalObtained >= practicalPassMarks;
 
   const ng = ngBoundary(boundaries);
   const matched = gradeFromPercentage(percentage, boundaries);
@@ -168,9 +177,7 @@ export function evaluateSubjectByGrade(
 
 export function summarise(results: SubjectResult[], boundaries: GradeBoundary[]): GpaSummary {
   const totalSubjects = results.length;
-  const gpa = totalSubjects
-    ? results.reduce((sum, r) => sum + r.gradePoint, 0) / totalSubjects
-    : 0;
+  const gpa = totalSubjects ? results.reduce((sum, r) => sum + r.gradePoint, 0) / totalSubjects : 0;
   const totalFull = results.reduce((sum, r) => sum + r.fullMarks, 0);
   const totalObtained = results.reduce((sum, r) => sum + r.totalObtained, 0);
   const ngSubjects = results.filter((r) => !r.passed).length;

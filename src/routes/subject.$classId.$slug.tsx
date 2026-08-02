@@ -40,7 +40,14 @@ export const Route = createFileRoute("/subject/$classId/$slug")({
   component: SubjectPage,
 });
 
-const tabs = ["Notes", "Exercise Answers", "Important Questions", "MCQs", "Past Questions", "Model Questions"];
+const tabs = [
+  "Notes",
+  "Exercise Answers",
+  "Important Questions",
+  "MCQs",
+  "Past Questions",
+  "Model Questions",
+];
 
 function SubjectPage() {
   const { subject, classId } = Route.useLoaderData();
@@ -115,7 +122,11 @@ function SubjectPage() {
           <Link to="/" className="hover:text-primary">
             Home
           </Link>{" "}
-          / <Link to="/notes" className="hover:text-primary">Notes</Link> / Class {classId} / {subject.name}
+          /{" "}
+          <Link to="/notes" className="hover:text-primary">
+            Notes
+          </Link>{" "}
+          / Class {classId} / {subject.name}
         </nav>
 
         <header className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 sm:flex sm:flex-wrap sm:justify-between">
@@ -127,7 +138,9 @@ function SubjectPage() {
               <h1 className="truncate font-display text-2xl font-extrabold sm:text-3xl">
                 Class {classId} {subject.name}
               </h1>
-              <p className="text-sm text-muted-foreground">{subject.chapters.length} chapters · NEB syllabus</p>
+              <p className="text-sm text-muted-foreground">
+                {subject.chapters.length} chapters · NEB syllabus
+              </p>
             </div>
           </div>
           <div className="flex shrink-0 gap-2">
@@ -160,7 +173,10 @@ function SubjectPage() {
             <span>{progress}%</span>
           </div>
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-muted">
-            <div className="h-full brand-gradient transition-all" style={{ width: `${progress}%` }} />
+            <div
+              className="h-full brand-gradient transition-all"
+              style={{ width: `${progress}%` }}
+            />
           </div>
         </div>
       </section>
@@ -174,7 +190,9 @@ function SubjectPage() {
                 <button
                   onClick={() => setChapter(i)}
                   className={`w-full rounded-xl px-3 py-2 text-left text-sm transition-colors ${
-                    chapter === i ? "bg-primary/10 font-semibold text-primary" : "text-muted-foreground hover:bg-muted"
+                    chapter === i
+                      ? "bg-primary/10 font-semibold text-primary"
+                      : "text-muted-foreground hover:bg-muted"
                   }`}
                 >
                   {i + 1}. {c}
@@ -206,7 +224,8 @@ function SubjectPage() {
               Chapter {chapter + 1}: {subject.chapters[chapter]}
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              {tab} for Class {classId} {subject.name}. Read online or download the PDF for offline revision.
+              {tab} for Class {classId} {subject.name}. Read online or download the PDF for offline
+              revision.
             </p>
 
             {tab === "Exercise Answers" ? (
@@ -218,12 +237,12 @@ function SubjectPage() {
                     </summary>
                     <div className="mt-3 space-y-3 text-sm">
                       <p>
-                        <span className="font-semibold text-primary">Answer:</span> A complete, exam-ready answer
-                        written in the NEB marking style.
+                        <span className="font-semibold text-primary">Answer:</span> A complete,
+                        exam-ready answer written in the NEB marking style.
                       </p>
                       <p className="text-muted-foreground">
-                        <span className="font-semibold text-accent">Explanation:</span> Each step is broken down so
-                        you understand the reasoning, not just the result.
+                        <span className="font-semibold text-accent">Explanation:</span> Each step is
+                        broken down so you understand the reasoning, not just the result.
                       </p>
                       <button className="inline-flex items-center gap-2 rounded-xl border border-border px-3 py-2 text-xs font-semibold text-muted-foreground hover:text-primary">
                         <Download className="h-4 w-4" /> Download PDF
@@ -267,7 +286,10 @@ function SubjectPage() {
                 </div>
 
                 <div className="mt-4 grid min-h-[420px] place-items-center rounded-2xl border border-dashed border-border bg-background p-8 text-center">
-                  <div style={{ transform: `scale(${zoom / 100})` }} className="transition-transform">
+                  <div
+                    style={{ transform: `scale(${zoom / 100})` }}
+                    className="transition-transform"
+                  >
                     <FileText className="mx-auto h-10 w-10 text-primary" />
                     <p className="mt-3 text-sm font-semibold">
                       {subject.name} — {tab} (Chapter {chapter + 1})

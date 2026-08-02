@@ -7,11 +7,20 @@ export const Route = createFileRoute("/past-papers")({
       { title: "Past Papers by Year — StudyHub Nepal" },
       {
         name: "description",
-        content: "Year-wise NEB board past question papers for Class 11 and Class 12, free to download.",
+        content:
+          "Year-wise NEB board past question papers for Class 11 and Class 12, free to download.",
       },
       { property: "og:title", content: "Past Papers by Year — StudyHub Nepal" },
-      { property: "og:description", content: "Board question papers organised by class, subject and year." },
+      {
+        property: "og:description",
+        content: "Board question papers organised by class, subject and year.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/past-papers" },
+      { property: "og:site_name", content: "StudyHub Nepal" },
+      { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: "/past-papers" }],
   }),
   component: () => (
     <ResourceLibrary

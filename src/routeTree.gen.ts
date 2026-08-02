@@ -24,6 +24,7 @@ import { Route as NotesRouteImport } from './routes/notes'
 import { Route as PastPapersRouteImport } from './routes/past-papers'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QuestionBankRouteImport } from './routes/question-bank'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -103,6 +104,11 @@ const QuestionBankRoute = QuestionBankRouteImport.update({
   path: '/question-bank',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -139,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/past-papers': typeof PastPapersRoute
   '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -159,6 +166,7 @@ export interface FileRoutesByTo {
   '/past-papers': typeof PastPapersRoute
   '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -181,6 +189,7 @@ export interface FileRoutesById {
   '/past-papers': typeof PastPapersRoute
   '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/past-papers'
     | '/privacy'
     | '/question-bank'
+    | '/sitemap.xml'
     | '/terms'
     | '/admin'
     | '/dashboard'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/past-papers'
     | '/privacy'
     | '/question-bank'
+    | '/sitemap.xml'
     | '/terms'
     | '/admin'
     | '/dashboard'
@@ -244,6 +255,7 @@ export interface FileRouteTypes {
     | '/past-papers'
     | '/privacy'
     | '/question-bank'
+    | '/sitemap.xml'
     | '/terms'
     | '/_authenticated/admin'
     | '/_authenticated/dashboard'
@@ -266,6 +278,7 @@ export interface RootRouteChildren {
   PastPapersRoute: typeof PastPapersRoute
   PrivacyRoute: typeof PrivacyRoute
   QuestionBankRoute: typeof QuestionBankRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   SubjectClassIdSlugRoute: typeof SubjectClassIdSlugRoute
 }
@@ -377,6 +390,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuestionBankRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -437,6 +457,7 @@ const rootRouteChildren: RootRouteChildren = {
   PastPapersRoute: PastPapersRoute,
   PrivacyRoute: PrivacyRoute,
   QuestionBankRoute: QuestionBankRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   SubjectClassIdSlugRoute: SubjectClassIdSlugRoute,
 }

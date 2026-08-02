@@ -6,18 +6,26 @@ import { mcqBank, leaderboard } from "@/lib/study-data";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
-
 export const Route = createFileRoute("/mcqs")({
   head: () => ({
     meta: [
       { title: "MCQ Practice with Timer — StudyHub Nepal" },
       {
         name: "description",
-        content: "Timed MCQ practice for NEB Class 11 and 12 with instant results, explanations and leaderboard.",
+        content:
+          "Timed MCQ practice for NEB Class 11 and 12 with instant results, explanations and leaderboard.",
       },
       { property: "og:title", content: "MCQ Practice with Timer — StudyHub Nepal" },
-      { property: "og:description", content: "Attempt quizzes, see your score instantly and review answers." },
+      {
+        property: "og:description",
+        content: "Attempt quizzes, see your score instantly and review answers.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/mcqs" },
+      { property: "og:site_name", content: "StudyHub Nepal" },
+      { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: "/mcqs" }],
   }),
   component: McqPage,
 });
@@ -53,7 +61,13 @@ function McqPage() {
     if (!finished || !user) return;
     void supabase
       .from("quiz_attempts")
-      .insert({ user_id: user.id, score, total: mcqBank.length, class_level: "11", subject_slug: null })
+      .insert({
+        user_id: user.id,
+        score,
+        total: mcqBank.length,
+        class_level: "11",
+        subject_slug: null,
+      })
       .then(({ error }) => {
         if (!error) toast.success("Attempt saved to your dashboard");
       });
@@ -67,14 +81,13 @@ function McqPage() {
     setStarted(true);
   }
 
-
   return (
     <main className="hero-surface">
       <section className="mx-auto max-w-7xl px-4 pt-14 lg:px-8">
         <h1 className="font-display text-4xl font-extrabold sm:text-5xl">MCQ Practice</h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
-          A mixed set of NEB-style multiple choice questions. Beat the timer, get your score instantly and
-          review every answer with an explanation.
+          A mixed set of NEB-style multiple choice questions. Beat the timer, get your score
+          instantly and review every answer with an explanation.
         </p>
       </section>
 
@@ -83,7 +96,9 @@ function McqPage() {
           <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4">
             <div className="min-w-0">
               <p className="text-sm font-bold">Mixed Quiz · {mcqBank.length} questions</p>
-              <p className="text-xs text-muted-foreground">Answered {answered} of {mcqBank.length}</p>
+              <p className="text-xs text-muted-foreground">
+                Answered {answered} of {mcqBank.length}
+              </p>
             </div>
             <span className="inline-flex shrink-0 items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 text-sm font-semibold text-primary">
               <Clock className="h-4 w-4" />
@@ -122,9 +137,7 @@ function McqPage() {
                           <button
                             key={oi}
                             disabled={finished}
-                            onClick={() =>
-                              setAnswers((a) => a.map((v, i) => (i === qi ? oi : v)))
-                            }
+                            onClick={() => setAnswers((a) => a.map((v, i) => (i === qi ? oi : v)))}
                             className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-left text-sm transition-colors ${
                               correct
                                 ? "border-accent bg-accent/10 text-accent"
@@ -162,7 +175,8 @@ function McqPage() {
                 ) : (
                   <div className="flex flex-wrap items-center gap-4">
                     <p className="rounded-full bg-accent/15 px-4 py-2 text-sm font-bold text-accent">
-                      Score: {score}/{mcqBank.length} ({Math.round((score / mcqBank.length) * 100)}%)
+                      Score: {score}/{mcqBank.length} ({Math.round((score / mcqBank.length) * 100)}
+                      %)
                     </p>
                     <button
                       onClick={reset}

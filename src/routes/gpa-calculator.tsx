@@ -14,8 +14,7 @@ import {
 } from "@/lib/gpa";
 import { breadcrumbSchema, canonical, faqSchema, seoMeta } from "@/lib/seo";
 
-const TITLE =
-  "NEB GPA Calculator for Class 11 & Class 12 | Science & Management | StudyHub Nepal";
+const TITLE = "NEB GPA Calculator for Class 11 & Class 12 | Science & Management | StudyHub Nepal";
 const DESCRIPTION =
   "Calculate your Class 11 and Class 12 NEB GPA instantly using Nepal's grading system. Supports Science and Management faculties with theory and practical marks.";
 
@@ -78,7 +77,11 @@ function GpaCalculatorPage() {
     queryKey: ["gpa-config"],
     queryFn: async () => {
       const [classes, faculties, subjects, grades, settings] = await Promise.all([
-        supabase.from("gpa_classes").select("id,slug,name,sort_order").eq("is_active", true).order("sort_order"),
+        supabase
+          .from("gpa_classes")
+          .select("id,slug,name,sort_order")
+          .eq("is_active", true)
+          .order("sort_order"),
         supabase
           .from("gpa_faculties")
           .select("id,class_id,slug,name,sort_order")
@@ -97,7 +100,8 @@ function GpaCalculatorPage() {
           .order("sort_order"),
         supabase.from("gpa_settings").select("key,value"),
       ]);
-      const err = classes.error ?? faculties.error ?? subjects.error ?? grades.error ?? settings.error;
+      const err =
+        classes.error ?? faculties.error ?? subjects.error ?? grades.error ?? settings.error;
       if (err) throw err;
       return {
         classes: classes.data ?? [],
@@ -115,13 +119,20 @@ function GpaCalculatorPage() {
     () => (config.data?.faculties ?? []).filter((f) => f.class_id === activeClass?.id),
     [config.data, activeClass?.id],
   );
-  const activeFaculty = facultiesForClass.find((f) => f.slug === facultySlug) ?? facultiesForClass[0];
+  const activeFaculty =
+    facultiesForClass.find((f) => f.slug === facultySlug) ?? facultiesForClass[0];
 
   const subjectList = useMemo<GpaSubject[]>(
     () =>
-      ((config.data?.subjects ?? []).filter((s) => s.faculty_id === activeFaculty?.id) as GpaSubject[]).map(
-        (s) => ({ ...s, theory_full_marks: Number(s.theory_full_marks), practical_full_marks: Number(s.practical_full_marks) }),
-      ),
+      (
+        (config.data?.subjects ?? []).filter(
+          (s) => s.faculty_id === activeFaculty?.id,
+        ) as GpaSubject[]
+      ).map((s) => ({
+        ...s,
+        theory_full_marks: Number(s.theory_full_marks),
+        practical_full_marks: Number(s.practical_full_marks),
+      })),
     [config.data, activeFaculty?.id],
   );
 
@@ -130,7 +141,12 @@ function GpaCalculatorPage() {
     setEntries((prev) => {
       const next: Record<string, SubjectEntry> = {};
       for (const s of subjectList) {
-        next[s.id] = prev[s.id] ?? { theory: "", practical: "", grade: "A", included: !s.is_optional };
+        next[s.id] = prev[s.id] ?? {
+          theory: "",
+          practical: "",
+          grade: "A",
+          included: !s.is_optional,
+        };
       }
       return next;
     });
@@ -160,7 +176,10 @@ function GpaCalculatorPage() {
   function reset() {
     setEntries((prev) =>
       Object.fromEntries(
-        Object.entries(prev).map(([id, e]) => [id, { ...e, theory: "", practical: "", grade: "A" }]),
+        Object.entries(prev).map(([id, e]) => [
+          id,
+          { ...e, theory: "", practical: "", grade: "A" },
+        ]),
       ),
     );
     toast.success("Calculator reset");
@@ -193,9 +212,15 @@ function GpaCalculatorPage() {
     <main className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
       <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground">
         <ol className="flex flex-wrap items-center gap-1.5">
-          <li><a href="/" className="hover:text-primary">Home</a></li>
+          <li>
+            <a href="/" className="hover:text-primary">
+              Home
+            </a>
+          </li>
           <li aria-hidden="true">/</li>
-          <li aria-current="page" className="text-foreground">GPA Calculator</li>
+          <li aria-current="page" className="text-foreground">
+            GPA Calculator
+          </li>
         </ol>
       </nav>
 
@@ -204,8 +229,8 @@ function GpaCalculatorPage() {
           NEB <span className="brand-gradient-text">GPA Calculator</span>
         </h1>
         <p className="mt-3 max-w-3xl text-sm text-muted-foreground">
-          Calculate your Class 11 or Class 12 GPA instantly with the latest NEB grading system. Choose
-          your faculty, enter theory and practical marks, and the calculator applies the{" "}
+          Calculate your Class 11 or Class 12 GPA instantly with the latest NEB grading system.
+          Choose your faculty, enter theory and practical marks, and the calculator applies the{" "}
           {theoryPct}% theory passing rule automatically.
         </p>
       </header>
@@ -216,7 +241,9 @@ function GpaCalculatorPage() {
         </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-3">
           <div>
-            <label htmlFor="gpa-class" className="text-xs font-semibold">Class</label>
+            <label htmlFor="gpa-class" className="text-xs font-semibold">
+              Class
+            </label>
             <select
               id="gpa-class"
               value={classSlug}
@@ -224,12 +251,16 @@ function GpaCalculatorPage() {
               className={`mt-1 ${fieldClass}`}
             >
               {(config.data?.classes ?? []).map((c) => (
-                <option key={c.id} value={c.slug}>{c.name}</option>
+                <option key={c.id} value={c.slug}>
+                  {c.name}
+                </option>
               ))}
             </select>
           </div>
           <div>
-            <label htmlFor="gpa-faculty" className="text-xs font-semibold">Faculty</label>
+            <label htmlFor="gpa-faculty" className="text-xs font-semibold">
+              Faculty
+            </label>
             <select
               id="gpa-faculty"
               value={activeFaculty?.slug ?? ""}
@@ -237,7 +268,9 @@ function GpaCalculatorPage() {
               className={`mt-1 ${fieldClass}`}
             >
               {facultiesForClass.map((f) => (
-                <option key={f.id} value={f.slug}>{f.name}</option>
+                <option key={f.id} value={f.slug}>
+                  {f.name}
+                </option>
               ))}
             </select>
           </div>
@@ -264,8 +297,13 @@ function GpaCalculatorPage() {
         </div>
       </section>
 
-      <section aria-labelledby="inputs" className="mt-6 rounded-3xl border border-border bg-card p-6">
-        <h2 id="inputs" className="font-display text-lg font-bold">2. Enter your results</h2>
+      <section
+        aria-labelledby="inputs"
+        className="mt-6 rounded-3xl border border-border bg-card p-6"
+      >
+        <h2 id="inputs" className="font-display text-lg font-bold">
+          2. Enter your results
+        </h2>
         <p className="mt-1 text-xs text-muted-foreground">
           Optional subjects can be switched off. Marks update your GPA live.
         </p>
@@ -292,12 +330,14 @@ function GpaCalculatorPage() {
                     />
                     <label htmlFor={`include-${s.id}`} className="text-sm font-semibold">
                       {s.name}
-                      {s.is_optional ? <span className="ml-1 text-xs text-muted-foreground">(optional)</span> : null}
+                      {s.is_optional ? (
+                        <span className="ml-1 text-xs text-muted-foreground">(optional)</span>
+                      ) : null}
                     </label>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    Theory {s.theory_full_marks} · {s.practical_label} {s.practical_full_marks} · pass theory ≥{" "}
-                    {(s.theory_full_marks * (theoryPct / 100)).toFixed(2)}
+                    Theory {s.theory_full_marks} · {s.practical_label} {s.practical_full_marks} ·
+                    pass theory ≥ {(s.theory_full_marks * (theoryPct / 100)).toFixed(2)}
                   </p>
                 </div>
 
@@ -340,7 +380,9 @@ function GpaCalculatorPage() {
                   </>
                 ) : (
                   <div className="sm:col-span-2">
-                    <label htmlFor={`grade-${s.id}`} className="text-xs font-semibold">Grade</label>
+                    <label htmlFor={`grade-${s.id}`} className="text-xs font-semibold">
+                      Grade
+                    </label>
                     <select
                       id={`grade-${s.id}`}
                       value={entry.grade}
@@ -380,9 +422,15 @@ function GpaCalculatorPage() {
         </div>
       </section>
 
-      <section aria-labelledby="results" className="mt-6 rounded-3xl border border-border bg-card p-6" id="gpa-result">
+      <section
+        aria-labelledby="results"
+        className="mt-6 rounded-3xl border border-border bg-card p-6"
+        id="gpa-result"
+      >
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 id="results" className="font-display text-lg font-bold">3. Your result</h2>
+          <h2 id="results" className="font-display text-lg font-bold">
+            3. Your result
+          </h2>
           <div className="flex flex-wrap gap-2 print:hidden">
             <button
               type="button"
@@ -420,18 +468,42 @@ function GpaCalculatorPage() {
             <caption className="sr-only">Subject-wise NEB result and grade points</caption>
             <thead>
               <tr className="text-left text-xs uppercase text-muted-foreground">
-                <th scope="col" className="px-3 py-2">Subject</th>
-                <th scope="col" className="px-3 py-2">Theory FM</th>
-                <th scope="col" className="px-3 py-2">Theory obt.</th>
-                <th scope="col" className="px-3 py-2">Prac./Int. FM</th>
-                <th scope="col" className="px-3 py-2">Prac./Int. obt.</th>
-                <th scope="col" className="px-3 py-2">Total</th>
-                <th scope="col" className="px-3 py-2">%</th>
-                <th scope="col" className="px-3 py-2">Theory pass</th>
-                <th scope="col" className="px-3 py-2">Theory status</th>
-                <th scope="col" className="px-3 py-2">Grade</th>
-                <th scope="col" className="px-3 py-2">GP</th>
-                <th scope="col" className="px-3 py-2">Result</th>
+                <th scope="col" className="px-3 py-2">
+                  Subject
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  Theory FM
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  Theory obt.
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  Prac./Int. FM
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  Prac./Int. obt.
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  Total
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  %
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  Theory pass
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  Theory status
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  Grade
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  GP
+                </th>
+                <th scope="col" className="px-3 py-2">
+                  Result
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -469,7 +541,9 @@ function GpaCalculatorPage() {
                     <td className="px-3 py-2">
                       <span
                         className={`inline-flex rounded-full px-2 py-0.5 text-xs font-bold ${
-                          r.passed ? "bg-primary/10 text-primary" : "bg-destructive text-destructive-foreground"
+                          r.passed
+                            ? "bg-primary/10 text-primary"
+                            : "bg-destructive text-destructive-foreground"
                         }`}
                       >
                         {r.grade}
@@ -482,7 +556,9 @@ function GpaCalculatorPage() {
                       ) : r.passed ? (
                         <span className="text-primary">Passed</span>
                       ) : (
-                        <span className="font-semibold text-destructive">NG — theory requirement not met</span>
+                        <span className="font-semibold text-destructive">
+                          NG — theory requirement not met
+                        </span>
                       )}
                     </td>
                   </tr>
@@ -496,12 +572,18 @@ function GpaCalculatorPage() {
           {[
             { label: "Final GPA", value: complete ? summary.gpa.toFixed(2) : "—" },
             { label: "Overall grade", value: complete ? summary.overallGrade : "—" },
-            { label: "Overall percentage", value: complete ? `${summary.overallPercentage.toFixed(2)}%` : "—" },
+            {
+              label: "Overall percentage",
+              value: complete ? `${summary.overallPercentage.toFixed(2)}%` : "—",
+            },
             { label: "Final result", value: complete ? summary.finalResult : "—" },
             { label: "Total subjects", value: String(summary.totalSubjects) },
             { label: "Passed subjects", value: String(summary.passedSubjects) },
             { label: "NG subjects", value: String(summary.ngSubjects) },
-            { label: "Class & faculty", value: `${activeClass?.name ?? ""} · ${activeFaculty?.name ?? ""}` },
+            {
+              label: "Class & faculty",
+              value: `${activeClass?.name ?? ""} · ${activeFaculty?.name ?? ""}`,
+            },
           ].map((c) => (
             <div key={c.label} className="glass rounded-2xl border border-border p-4">
               <p className="text-xs text-muted-foreground">{c.label}</p>
@@ -511,11 +593,19 @@ function GpaCalculatorPage() {
         </div>
       </section>
 
-      <section aria-labelledby="grading" className="mt-6 rounded-3xl border border-border bg-card p-6">
-        <h2 id="grading" className="font-display text-lg font-bold">Latest NEB grading system</h2>
+      <section
+        aria-labelledby="grading"
+        className="mt-6 rounded-3xl border border-border bg-card p-6"
+      >
+        <h2 id="grading" className="font-display text-lg font-bold">
+          Latest NEB grading system
+        </h2>
         <div className="mt-4 grid gap-2 sm:grid-cols-3">
           {boundaries.map((b) => (
-            <div key={b.grade} className="flex items-center justify-between rounded-xl border border-border px-4 py-2 text-sm">
+            <div
+              key={b.grade}
+              className="flex items-center justify-between rounded-xl border border-border px-4 py-2 text-sm"
+            >
               <span className="font-semibold">{b.grade}</span>
               <span className="text-muted-foreground">
                 {Number(b.min_gpa).toFixed(2)} – {Number(b.max_gpa).toFixed(2)}

@@ -12,11 +12,20 @@ export const Route = createFileRoute("/contact")({
       { title: "Contact StudyHub Nepal — Ask, Suggest, Report" },
       {
         name: "description",
-        content: "Get in touch with StudyHub Nepal for study material requests, corrections or partnerships.",
+        content:
+          "Get in touch with StudyHub Nepal for study material requests, corrections or partnerships.",
       },
       { property: "og:title", content: "Contact StudyHub Nepal" },
-      { property: "og:description", content: "Questions, suggestions or corrections? Send us a message." },
+      {
+        property: "og:description",
+        content: "Questions, suggestions or corrections? Send us a message.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/contact" },
+      { property: "og:site_name", content: "StudyHub Nepal" },
+      { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: "/contact" }],
   }),
   component: Contact,
 });
@@ -28,10 +37,22 @@ const schema = z.object({
 });
 
 const faqs = [
-  { q: "Is StudyHub Nepal free?", a: "Yes. Every note, solution and past paper is free to read and download." },
-  { q: "Which board do you cover?", a: "NEB Class 11 and Class 12, science and management streams." },
-  { q: "Can I request a chapter?", a: "Absolutely — send the subject and chapter through this form." },
-  { q: "Do I need an account?", a: "Only to bookmark, track progress and continue reading across devices." },
+  {
+    q: "Is StudyHub Nepal free?",
+    a: "Yes. Every note, solution and past paper is free to read and download.",
+  },
+  {
+    q: "Which board do you cover?",
+    a: "NEB Class 11 and Class 12, science and management streams.",
+  },
+  {
+    q: "Can I request a chapter?",
+    a: "Absolutely — send the subject and chapter through this form.",
+  },
+  {
+    q: "Do I need an account?",
+    a: "Only to bookmark, track progress and continue reading across devices.",
+  },
 ];
 
 function Contact() {
@@ -52,7 +73,8 @@ function Contact() {
     const { error } = await supabase.from("contact_messages").insert({
       name: parsed.data.name,
       email: parsed.data.email,
-      subject: "subject" in parsed.data ? (parsed.data as { subject?: string }).subject ?? null : null,
+      subject:
+        "subject" in parsed.data ? ((parsed.data as { subject?: string }).subject ?? null) : null,
       message: parsed.data.message,
     });
     if (error) {
@@ -63,13 +85,13 @@ function Contact() {
     toast.success("Message sent! We usually reply within a day.");
   }
 
-
   return (
     <main className="hero-surface">
       <section className="mx-auto max-w-7xl px-4 pt-14 lg:px-8">
         <h1 className="font-display text-4xl font-extrabold sm:text-5xl">Contact us</h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
-          Missing a chapter? Spotted a mistake? Want to contribute notes? We would love to hear from you.
+          Missing a chapter? Spotted a mistake? Want to contribute notes? We would love to hear from
+          you.
         </p>
       </section>
 
@@ -77,7 +99,9 @@ function Contact() {
         <form onSubmit={onSubmit} className="rounded-3xl border border-border bg-card p-6">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="name" className="text-xs font-semibold">Name</label>
+              <label htmlFor="name" className="text-xs font-semibold">
+                Name
+              </label>
               <input
                 id="name"
                 name="name"
@@ -87,7 +111,9 @@ function Contact() {
               {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
             </div>
             <div>
-              <label htmlFor="email" className="text-xs font-semibold">Email</label>
+              <label htmlFor="email" className="text-xs font-semibold">
+                Email
+              </label>
               <input
                 id="email"
                 name="email"
@@ -99,7 +125,9 @@ function Contact() {
             </div>
           </div>
           <div className="mt-4">
-            <label htmlFor="message" className="text-xs font-semibold">Message</label>
+            <label htmlFor="message" className="text-xs font-semibold">
+              Message
+            </label>
             <textarea
               id="message"
               name="message"

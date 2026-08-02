@@ -28,20 +28,46 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "StudyHub Nepal — Study Smarter, Score Higher" },
       {
         property: "og:description",
-        content: "Everything Class 11 & 12 students in Nepal need: notes, solutions, MCQs and past papers.",
+        content:
+          "Everything Class 11 & 12 students in Nepal need: notes, solutions, MCQs and past papers.",
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "/" },
+      { property: "og:site_name", content: "StudyHub Nepal" },
+      { name: "twitter:card", content: "summary" },
     ],
+    links: [{ rel: "canonical", href: "/" }],
   }),
   component: Home,
 });
 
 const features = [
-  { icon: FileText, title: "Chapter Notes", text: "Concise, syllabus-aligned notes with downloadable PDFs." },
-  { icon: ClipboardList, title: "Exercise Answers", text: "Step-by-step solutions with clear explanations." },
-  { icon: ListChecks, title: "MCQ Practice", text: "Timed quizzes with instant results and a leaderboard." },
-  { icon: FileQuestion, title: "Model Questions", text: "NEB-pattern model sets to rehearse the real exam." },
+  {
+    icon: FileText,
+    title: "Chapter Notes",
+    text: "Concise, syllabus-aligned notes with downloadable PDFs.",
+  },
+  {
+    icon: ClipboardList,
+    title: "Exercise Answers",
+    text: "Step-by-step solutions with clear explanations.",
+  },
+  {
+    icon: ListChecks,
+    title: "MCQ Practice",
+    text: "Timed quizzes with instant results and a leaderboard.",
+  },
+  {
+    icon: FileQuestion,
+    title: "Model Questions",
+    text: "NEB-pattern model sets to rehearse the real exam.",
+  },
   { icon: BookOpen, title: "Past Papers", text: "Year-wise board questions organised by subject." },
-  { icon: Download, title: "Offline Ready", text: "Download once, revise anywhere — even without data." },
+  {
+    icon: Download,
+    title: "Offline Ready",
+    text: "Download once, revise anywhere — even without data.",
+  },
 ];
 
 const stats = [
@@ -82,8 +108,8 @@ function Home() {
               Study Smarter, <span className="brand-gradient-text">Score Higher.</span>
             </h1>
             <p className="mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
-              Access Class 11 &amp; Class 12 Notes, Exercise Solutions, MCQs, Model Questions, and Past
-              Papers—all in one place.
+              Access Class 11 &amp; Class 12 Notes, Exercise Solutions, MCQs, Model Questions, and
+              Past Papers—all in one place.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -130,7 +156,9 @@ function Home() {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-20 lg:px-8">
-        <h2 className="font-display text-3xl font-extrabold sm:text-4xl">Everything in one study hub</h2>
+        <h2 className="font-display text-3xl font-extrabold sm:text-4xl">
+          Everything in one study hub
+        </h2>
         <p className="mt-2 max-w-2xl text-muted-foreground">
           Organised by class, subject and chapter — so you always know what to revise next.
         </p>
@@ -173,7 +201,9 @@ function Home() {
                 </span>
                 <h3 className="mt-3 text-base font-bold group-hover:text-primary">{s.name}</h3>
                 <p className="mt-1 text-xs text-muted-foreground">{s.blurb}</p>
-                <p className="mt-4 text-xs font-semibold text-primary">{s.chapters.length} chapters</p>
+                <p className="mt-4 text-xs font-semibold text-primary">
+                  {s.chapters.length} chapters
+                </p>
               </Link>
             ))}
           </div>
@@ -183,10 +213,12 @@ function Home() {
       <section className="mx-auto max-w-7xl px-4 pb-20 lg:px-8">
         <div className="glass grid items-center gap-8 rounded-3xl p-8 lg:grid-cols-[1.2fr_1fr] lg:p-12">
           <div>
-            <h2 className="font-display text-3xl font-extrabold">Practice MCQs with a live timer</h2>
+            <h2 className="font-display text-3xl font-extrabold">
+              Practice MCQs with a live timer
+            </h2>
             <p className="mt-3 text-muted-foreground">
-              Attempt subject-wise multiple choice questions, see your score instantly, review the correct
-              answers with explanations and climb the weekly leaderboard.
+              Attempt subject-wise multiple choice questions, see your score instantly, review the
+              correct answers with explanations and climb the weekly leaderboard.
             </p>
             <Link
               to="/mcqs"

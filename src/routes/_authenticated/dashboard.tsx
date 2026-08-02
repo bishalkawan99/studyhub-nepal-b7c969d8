@@ -118,8 +118,14 @@ function Dashboard() {
             {bookmarks.data?.length ? (
               <ul className="mt-4 space-y-2">
                 {bookmarks.data.map((b) => (
-                  <li key={b.id} className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3">
-                    <a href={b.href} className="min-w-0 truncate text-sm font-medium hover:text-primary">
+                  <li
+                    key={b.id}
+                    className="flex items-center justify-between gap-3 rounded-xl border border-border px-4 py-3"
+                  >
+                    <a
+                      href={b.href}
+                      className="min-w-0 truncate text-sm font-medium hover:text-primary"
+                    >
                       {b.label}
                     </a>
                     <button
@@ -146,9 +152,14 @@ function Dashboard() {
             {attempts.data?.length ? (
               <ul className="mt-4 space-y-2">
                 {attempts.data.map((a) => (
-                  <li key={a.id} className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm">
+                  <li
+                    key={a.id}
+                    className="flex items-center justify-between rounded-xl border border-border px-4 py-3 text-sm"
+                  >
                     <span className="min-w-0 truncate">
-                      {a.subject_slug ? `${a.subject_slug} · Class ${a.class_level}` : "Mixed practice"}
+                      {a.subject_slug
+                        ? `${a.subject_slug} · Class ${a.class_level}`
+                        : "Mixed practice"}
                     </span>
                     <span className="shrink-0 font-semibold text-primary">
                       {a.score}/{a.total}
