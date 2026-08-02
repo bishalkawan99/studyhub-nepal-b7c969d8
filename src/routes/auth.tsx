@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 
 const searchSchema = z.object({
   redirect: z.string().optional(),
@@ -52,6 +51,38 @@ function AuthPage() {
   const [password, setPassword] = useState("");
 
   const destination = search.redirect?.startsWith("/") ? search.redirect : "/dashboard";
+  const getRedirectTo = () => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
+    return `${window.location.origin}/auth?redirect=${encodeURIComponent(destination)}`;
+  };
+
+  useEffect(() => {
+    let active = true;
+
+    const restoreSession = async () => {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!active) return;
+      if (sessionData.session?.user) {
+        navigate({ to: destination, replace: true });
+      }
+    };
+
+    void restoreSession();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (active && session?.user) {
+        navigate({ to: destination, replace: true });
+      }
+    });
+
+    return () => {
+      active = false;
+      authListener.subscription.unsubscribe();
+    };
+  }, [destination, navigate]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,11 +94,12 @@ function AuthPage() {
     setBusy(true);
     try {
       if (mode === "signup") {
+        const redirectTo = getRedirectTo();
         const { error } = await supabase.auth.signUp({
           email: parsed.data.email,
           password: parsed.data.password,
           options: {
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: redirectTo,
             data: { full_name: parsed.data.fullName || null },
           },
         });
@@ -94,15 +126,26 @@ function AuthPage() {
     setBusy(true);
     try {
       sessionStorage.setItem("studyhub:next", destination);
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+      const redirectTo = getRedirectTo();
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: redirectTo ?? undefined,
+        },
       });
-      if (result.error) {
-        toast.error("Google sign-in failed. Please try again.");
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.url) {
+        window.location.assign(data.url);
         return;
       }
-      if (result.redirected) return;
-      navigate({ to: destination });
+
+      toast.error("Google sign-in failed. Please try again.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Google sign-in failed. Please try again.");
     } finally {
       setBusy(false);
     }

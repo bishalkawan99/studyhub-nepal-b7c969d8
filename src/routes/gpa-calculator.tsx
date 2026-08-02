@@ -145,7 +145,7 @@ function GpaCalculatorPage() {
           theory: "",
           practical: "",
           grade: "A",
-          included: !s.is_optional,
+          included: true,
         };
       }
       return next;
@@ -324,7 +324,6 @@ function GpaCalculatorPage() {
                       id={`include-${s.id}`}
                       type="checkbox"
                       checked={entry.included}
-                      disabled={!s.is_optional}
                       onChange={(e) => update(s.id, { included: e.target.checked })}
                       className="h-4 w-4 rounded border-border accent-primary"
                     />
