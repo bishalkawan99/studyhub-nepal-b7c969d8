@@ -113,6 +113,187 @@ export type Database = {
         }
         Relationships: []
       }
+      gpa_classes: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      gpa_faculties: {
+        Row: {
+          class_id: string
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          class_id: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          class_id?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gpa_faculties_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "gpa_classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      gpa_grade_boundaries: {
+        Row: {
+          created_at: string
+          grade: string
+          grade_point: number
+          id: string
+          max_gpa: number
+          min_gpa: number
+          min_percentage: number | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          grade: string
+          grade_point: number
+          id?: string
+          max_gpa: number
+          min_gpa: number
+          min_percentage?: number | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          grade?: string
+          grade_point?: number
+          id?: string
+          max_gpa?: number
+          min_gpa?: number
+          min_percentage?: number | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      gpa_settings: {
+        Row: {
+          created_at: string
+          key: string
+          label: string
+          updated_at: string
+          value: number
+        }
+        Insert: {
+          created_at?: string
+          key: string
+          label: string
+          updated_at?: string
+          value: number
+        }
+        Update: {
+          created_at?: string
+          key?: string
+          label?: string
+          updated_at?: string
+          value?: number
+        }
+        Relationships: []
+      }
+      gpa_subjects: {
+        Row: {
+          created_at: string
+          faculty_id: string
+          id: string
+          is_active: boolean
+          is_optional: boolean
+          name: string
+          practical_full_marks: number
+          practical_label: string
+          sort_order: number
+          theory_full_marks: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          faculty_id: string
+          id?: string
+          is_active?: boolean
+          is_optional?: boolean
+          name: string
+          practical_full_marks?: number
+          practical_label?: string
+          sort_order?: number
+          theory_full_marks?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          faculty_id?: string
+          id?: string
+          is_active?: boolean
+          is_optional?: boolean
+          name?: string
+          practical_full_marks?: number
+          practical_label?: string
+          sort_order?: number
+          theory_full_marks?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gpa_subjects_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "gpa_faculties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       materials: {
         Row: {
           chapter: string | null
