@@ -16,6 +16,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ExerciseAnswersRouteImport } from './routes/exercise-answers'
+import { Route as GpaCalculatorRouteImport } from './routes/gpa-calculator'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as McqsRouteImport } from './routes/mcqs'
 import { Route as ModelQuestionsRouteImport } from './routes/model-questions'
@@ -60,6 +61,11 @@ const ContactRoute = ContactRouteImport.update({
 const ExerciseAnswersRoute = ExerciseAnswersRouteImport.update({
   id: '/exercise-answers',
   path: '/exercise-answers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GpaCalculatorRoute = GpaCalculatorRouteImport.update({
+  id: '/gpa-calculator',
+  path: '/gpa-calculator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -125,6 +131,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/exercise-answers': typeof ExerciseAnswersRoute
+  '/gpa-calculator': typeof GpaCalculatorRoute
   '/login': typeof LoginRoute
   '/mcqs': typeof McqsRoute
   '/model-questions': typeof ModelQuestionsRoute
@@ -144,6 +151,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/exercise-answers': typeof ExerciseAnswersRoute
+  '/gpa-calculator': typeof GpaCalculatorRoute
   '/login': typeof LoginRoute
   '/mcqs': typeof McqsRoute
   '/model-questions': typeof ModelQuestionsRoute
@@ -165,6 +173,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/exercise-answers': typeof ExerciseAnswersRoute
+  '/gpa-calculator': typeof GpaCalculatorRoute
   '/login': typeof LoginRoute
   '/mcqs': typeof McqsRoute
   '/model-questions': typeof ModelQuestionsRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/exercise-answers'
+    | '/gpa-calculator'
     | '/login'
     | '/mcqs'
     | '/model-questions'
@@ -205,6 +215,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/exercise-answers'
+    | '/gpa-calculator'
     | '/login'
     | '/mcqs'
     | '/model-questions'
@@ -225,6 +236,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/exercise-answers'
+    | '/gpa-calculator'
     | '/login'
     | '/mcqs'
     | '/model-questions'
@@ -246,6 +258,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
   ExerciseAnswersRoute: typeof ExerciseAnswersRoute
+  GpaCalculatorRoute: typeof GpaCalculatorRoute
   LoginRoute: typeof LoginRoute
   McqsRoute: typeof McqsRoute
   ModelQuestionsRoute: typeof ModelQuestionsRoute
@@ -306,6 +319,13 @@ declare module '@tanstack/react-router' {
       path: '/exercise-answers'
       fullPath: '/exercise-answers'
       preLoaderRoute: typeof ExerciseAnswersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gpa-calculator': {
+      id: '/gpa-calculator'
+      path: '/gpa-calculator'
+      fullPath: '/gpa-calculator'
+      preLoaderRoute: typeof GpaCalculatorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -409,6 +429,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
   ExerciseAnswersRoute: ExerciseAnswersRoute,
+  GpaCalculatorRoute: GpaCalculatorRoute,
   LoginRoute: LoginRoute,
   McqsRoute: McqsRoute,
   ModelQuestionsRoute: ModelQuestionsRoute,
