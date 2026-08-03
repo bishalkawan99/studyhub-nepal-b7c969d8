@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, Clock, RotateCcw, Trophy, XCircle } from "lucide-react";
-import { toast } from "sonner";
 import { mcqBank, leaderboard } from "@/lib/study-data";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/mcqs")({
   head: () => ({
@@ -33,7 +30,6 @@ export const Route = createFileRoute("/mcqs")({
 const DURATION = 180;
 
 function McqPage() {
-  const { user } = useAuth();
   const [started, setStarted] = useState(false);
 
   const [finished, setFinished] = useState(false);
@@ -56,23 +52,6 @@ function McqPage() {
 
   const score = answers.filter((a, i) => a === mcqBank[i].answer).length;
   const answered = answers.filter((a) => a !== null).length;
-
-  useEffect(() => {
-    if (!finished || !user) return;
-    void supabase
-      .from("quiz_attempts")
-      .insert({
-        user_id: user.id,
-        score,
-        total: mcqBank.length,
-        class_level: "11",
-        subject_slug: null,
-      })
-      .then(({ error }) => {
-        if (!error) toast.success("Attempt saved to your dashboard");
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [finished, user?.id]);
 
   function reset() {
     setAnswers(mcqBank.map(() => null));
