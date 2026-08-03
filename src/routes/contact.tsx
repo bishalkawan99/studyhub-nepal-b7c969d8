@@ -51,7 +51,7 @@ const faqs = [
   },
   {
     q: "Do I need an account?",
-    a: "Only to bookmark, track progress and continue reading across devices.",
+    a: "No — every note, PDF, answer and MCQ is free to browse and download without signing up.",
   },
 ];
 

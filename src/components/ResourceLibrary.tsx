@@ -5,6 +5,7 @@ import { Download, Eye, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { classes, subjects, buildResources } from "@/lib/study-data";
 import { supabase } from "@/integrations/supabase/client";
+import { getMaterialFileUrl } from "@/lib/materials.functions";
 import { SearchBar } from "./SearchBar";
 
 export function ResourceLibrary({
@@ -35,17 +36,21 @@ export function ResourceLibrary({
     },
   });
 
-  const openFile = async (path: string | null) => {
+  const openFile = async (id: string, path: string | null) => {
     if (!path) {
       toast.info("This material has no file attached yet.");
       return;
     }
-    const { data, error } = await supabase.storage.from("study-materials").createSignedUrl(path, 60 * 10);
-    if (error || !data) {
-      toast.error("Sign in to open this PDF.");
-      return;
+    try {
+      const { url } = await getMaterialFileUrl({ data: { id } });
+      if (!url) {
+        toast.error("This file is unavailable right now.");
+        return;
+      }
+      window.open(url, "_blank", "noopener");
+    } catch {
+      toast.error("Could not open this PDF. Please try again.");
     }
-    window.open(data.signedUrl, "_blank", "noopener");
   };
 
   const uploadedList = (uploaded.data ?? []).filter(
@@ -116,7 +121,7 @@ export function ResourceLibrary({
                     <p className="mt-3 line-clamp-3 text-sm text-muted-foreground">{m.description}</p>
                   )}
                   <button
-                    onClick={() => void openFile(m.file_path)}
+                    onClick={() => void openFile(m.id, m.file_path)}
                     className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl brand-gradient px-3 py-2 text-xs font-semibold text-primary-foreground"
                   >
                     <Download className="h-4 w-4" /> Open PDF
