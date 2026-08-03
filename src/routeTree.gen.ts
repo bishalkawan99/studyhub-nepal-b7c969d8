@@ -24,6 +24,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QuestionBankRouteImport } from './routes/question-bank'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ApiPublicSetupAdminRouteImport } from './routes/api/public/setup-admin'
 import { Route as SubjectClassIdSlugRouteImport } from './routes/subject.$classId.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -101,6 +102,11 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicSetupAdminRoute = ApiPublicSetupAdminRouteImport.update({
+  id: '/api/public/setup-admin',
+  path: '/api/public/setup-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubjectClassIdSlugRoute = SubjectClassIdSlugRouteImport.update({
   id: '/subject/$classId/$slug',
   path: '/subject/$classId/$slug',
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/question-bank': typeof QuestionBankRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRoutesByTo {
@@ -141,6 +148,7 @@ export interface FileRoutesByTo {
   '/question-bank': typeof QuestionBankRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRoutesById {
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/question-bank': typeof QuestionBankRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
+  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
 }
 export interface FileRouteTypes {
@@ -180,6 +189,7 @@ export interface FileRouteTypes {
     | '/question-bank'
     | '/sitemap.xml'
     | '/terms'
+    | '/api/public/setup-admin'
     | '/subject/$classId/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -198,6 +208,7 @@ export interface FileRouteTypes {
     | '/question-bank'
     | '/sitemap.xml'
     | '/terms'
+    | '/api/public/setup-admin'
     | '/subject/$classId/$slug'
   id:
     | '__root__'
@@ -216,6 +227,7 @@ export interface FileRouteTypes {
     | '/question-bank'
     | '/sitemap.xml'
     | '/terms'
+    | '/api/public/setup-admin'
     | '/subject/$classId/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -235,6 +247,7 @@ export interface RootRouteChildren {
   QuestionBankRoute: typeof QuestionBankRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
+  ApiPublicSetupAdminRoute: typeof ApiPublicSetupAdminRoute
   SubjectClassIdSlugRoute: typeof SubjectClassIdSlugRoute
 }
 
@@ -345,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/setup-admin': {
+      id: '/api/public/setup-admin'
+      path: '/api/public/setup-admin'
+      fullPath: '/api/public/setup-admin'
+      preLoaderRoute: typeof ApiPublicSetupAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/subject/$classId/$slug': {
       id: '/subject/$classId/$slug'
       path: '/subject/$classId/$slug'
@@ -371,6 +391,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuestionBankRoute: QuestionBankRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
+  ApiPublicSetupAdminRoute: ApiPublicSetupAdminRoute,
   SubjectClassIdSlugRoute: SubjectClassIdSlugRoute,
 }
 export const routeTree = rootRouteImport
