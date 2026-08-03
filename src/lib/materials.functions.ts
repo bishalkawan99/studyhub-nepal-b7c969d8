@@ -21,13 +21,5 @@ export const getMaterialFileUrl = createServerFn({ method: "POST" })
       .from("study-materials")
       .createSignedUrl(row.file_path, 60 * 10);
     if (signed.error) throw signed.error;
-
-    await supabaseAdmin
-      .from("materials")
-      .update({ download_count: undefined })
-      .eq("id", data.id)
-      .select("id")
-      .maybeSingle();
-
     return { url: signed.data?.signedUrl ?? null };
   });
