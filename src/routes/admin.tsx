@@ -19,7 +19,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { UploadWizard } from "@/components/UploadWizard";
 import { classes, subjects } from "@/lib/study-data";
 
-export const Route = createFileRoute("/_authenticated/admin")({
+export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
       { title: "Admin dashboard — StudyHub Nepal" },
