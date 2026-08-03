@@ -305,7 +305,7 @@ function GpaCalculatorPage() {
           2. Enter your results
         </h2>
         <p className="mt-1 text-xs text-muted-foreground">
-          Optional subjects can be switched off. Marks update your GPA live.
+          Tick only the subjects you want to include — none are compulsory. Marks update your GPA live.
         </p>
 
         <div className="mt-5 grid gap-3">
@@ -329,9 +329,6 @@ function GpaCalculatorPage() {
                     />
                     <label htmlFor={`include-${s.id}`} className="text-sm font-semibold">
                       {s.name}
-                      {s.is_optional ? (
-                        <span className="ml-1 text-xs text-muted-foreground">(optional)</span>
-                      ) : null}
                     </label>
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">
