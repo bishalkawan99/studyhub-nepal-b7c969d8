@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   BarChart3,
@@ -8,14 +8,14 @@ import {
   ListChecks,
   Loader2,
   Newspaper,
+  LogOut,
   ShieldAlert,
   Trash2,
   Upload,
-  Users,
 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { UploadWizard } from "@/components/UploadWizard";
 import { classes, subjects } from "@/lib/study-data";
 
@@ -29,6 +29,7 @@ export const Route = createFileRoute("/admin")({
       { name: "robots", content: "noindex" },
     ],
   }),
+  ssr: false,
   component: AdminPage,
 });
 
@@ -48,9 +49,92 @@ const tabs = [
   { id: "messages", label: "Messages", icon: Inbox },
 ] as const;
 
+function AdminLogin() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+    setBusy(false);
+    if (error) {
+      toast.error("Invalid administrator credentials");
+      return;
+    }
+    toast.success("Signed in");
+  }
+
+  return (
+    <main className="hero-surface grid min-h-[80vh] place-items-center px-4 py-16">
+      <form
+        onSubmit={submit}
+        className="glass w-full max-w-sm rounded-3xl p-8 shadow-soft"
+        aria-labelledby="admin-login-title"
+      >
+        <ShieldAlert className="h-7 w-7 text-primary" />
+        <h1 id="admin-login-title" className="mt-4 font-display text-xl font-extrabold">
+          Administrator sign in
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Restricted area. Site management access only.
+        </p>
+        <div className="mt-6 space-y-4">
+          <div>
+            <label htmlFor="admin-email" className="text-xs font-semibold">
+              Email
+            </label>
+            <input
+              id="admin-email"
+              type="email"
+              required
+              autoComplete="username"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
+            />
+          </div>
+          <div>
+            <label htmlFor="admin-password" className="text-xs font-semibold">
+              Password
+            </label>
+            <input
+              id="admin-password"
+              type="password"
+              required
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
+            />
+          </div>
+          <button
+            disabled={busy}
+            className="flex w-full items-center justify-center gap-2 rounded-full brand-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft disabled:opacity-60"
+          >
+            {busy && <Loader2 className="h-4 w-4 animate-spin" />} Sign in
+          </button>
+        </div>
+      </form>
+    </main>
+  );
+}
+
 function AdminPage() {
-  const { isAdmin, loading } = useAuth();
+  const { session, isAdmin, loading } = useAdminAuth();
   const [tab, setTab] = useState<(typeof tabs)[number]["id"]>("overview");
+  const queryClient = useQueryClient();
+
+  async function signOut() {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    await supabase.auth.signOut();
+    toast.success("Signed out");
+  }
 
   if (loading) {
     return (
@@ -60,6 +144,8 @@ function AdminPage() {
     );
   }
 
+  if (!session) return <AdminLogin />;
+
   if (!isAdmin) {
     return (
       <main className="hero-surface grid min-h-[70vh] place-items-center px-4">
@@ -67,14 +153,14 @@ function AdminPage() {
           <ShieldAlert className="mx-auto h-8 w-8 text-destructive" />
           <h1 className="mt-4 font-display text-xl font-extrabold">Admins only</h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            This area manages site content. Ask an existing admin to grant you the admin role.
+            This account does not have site management access.
           </p>
-          <Link
-            to="/dashboard"
+          <button
+            onClick={() => void signOut()}
             className="mt-6 inline-flex rounded-full brand-gradient px-5 py-2.5 text-sm font-semibold text-primary-foreground"
           >
-            Back to my dashboard
-          </Link>
+            Sign out
+          </button>
         </div>
       </main>
     );
@@ -85,8 +171,14 @@ function AdminPage() {
       <section className="mx-auto max-w-7xl px-4 pb-16 pt-14 lg:px-8">
         <h1 className="font-display text-3xl font-extrabold">Admin dashboard</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Upload PDFs, publish MCQs and blog posts, and read student messages.
+          Upload PDFs, publish MCQs and blog posts, and read visitor messages.
         </p>
+        <button
+          onClick={() => void signOut()}
+          className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:text-primary"
+        >
+          <LogOut className="h-4 w-4" /> Sign out
+        </button>
 
         <div className="mt-7 flex flex-wrap gap-2">
           {tabs.map((t) => (
@@ -118,7 +210,7 @@ function AdminPage() {
 
 function useCount(
   table:
-    "materials" | "mcq_questions" | "blog_posts" | "profiles" | "page_views" | "contact_messages",
+    "materials" | "mcq_questions" | "blog_posts" | "page_views" | "contact_messages",
 ) {
   return useQuery({
     queryKey: ["count", table],
@@ -136,7 +228,6 @@ function Overview() {
   const materials = useCount("materials");
   const mcqs = useCount("mcq_questions");
   const posts = useCount("blog_posts");
-  const students = useCount("profiles");
   const views = useCount("page_views");
   const messages = useCount("contact_messages");
 
@@ -157,7 +248,6 @@ function Overview() {
     { label: "Materials", value: materials.data ?? 0, icon: FileText },
     { label: "MCQ questions", value: mcqs.data ?? 0, icon: ListChecks },
     { label: "Blog posts", value: posts.data ?? 0, icon: Newspaper },
-    { label: "Registered students", value: students.data ?? 0, icon: Users },
     { label: "Page views", value: views.data ?? 0, icon: BarChart3 },
     { label: "Messages", value: messages.data ?? 0, icon: Inbox },
   ];
