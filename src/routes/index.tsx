@@ -19,22 +19,29 @@ import { classes, subjects, blogPosts } from "@/lib/study-data";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "StudyHub Nepal — Class 11 & 12 Notes, MCQs & Past Papers" },
-      {
-        name: "description",
-        content:
-          "Study smarter, score higher. NEB Class 11 & 12 notes, exercise solutions, MCQ practice, model questions and past papers in one place.",
-      },
-      { property: "og:title", content: "StudyHub Nepal — Study Smarter, Score Higher" },
-      {
-        property: "og:description",
-        content:
-          "Everything Class 11 & 12 students in Nepal need: notes, solutions, MCQs and past papers.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
-      { property: "og:site_name", content: "StudyHub Nepal" },
-      { name: "twitter:card", content: "summary" },
+  { title: "StudyHub Nepal — Class 11 & 12 Notes, MCQs & Past Papers" },
+  {
+    name: "description",
+    content:
+      "Study smarter, score higher. NEB Class 11 & 12 notes, exercise solutions, MCQ practice, model questions and past papers in one place.",
+  },
+  {
+    name: "google-adsense-account",
+    content: "ca-pub-5821995493618494",
+  },
+  {
+    property: "og:title",
+    content: "StudyHub Nepal — Study Smarter, Score Higher",
+  },
+  {
+    property: "og:description",
+    content:
+      "Everything Class 11 & 12 students in Nepal need: notes, solutions, MCQs and past papers.",
+  },
+  { property: "og:type", content: "website" },
+  { property: "og:url", content: "/" },
+  { property: "og:site_name", content: "StudyHub Nepal" },
+  { name: "twitter:card", content: "summary" },
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),
