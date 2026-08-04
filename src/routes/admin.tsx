@@ -53,6 +53,8 @@ function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [mode, setMode] = useState<"signin" | "reset">("signin");
+  const [sent, setSent] = useState(false);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -69,19 +71,36 @@ function AdminLogin() {
     toast.success("Signed in");
   }
 
+  async function sendReset(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setBusy(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setSent(true);
+    toast.success("Reset link sent");
+  }
+
   return (
     <main className="hero-surface grid min-h-[80vh] place-items-center px-4 py-16">
       <form
-        onSubmit={submit}
+        onSubmit={mode === "signin" ? submit : sendReset}
         className="glass w-full max-w-sm rounded-3xl p-8 shadow-soft"
         aria-labelledby="admin-login-title"
       >
         <ShieldAlert className="h-7 w-7 text-primary" />
         <h1 id="admin-login-title" className="mt-4 font-display text-xl font-extrabold">
-          Administrator sign in
+          {mode === "signin" ? "Administrator sign in" : "Reset your password"}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Restricted area. Site management access only.
+          {mode === "signin"
+            ? "Restricted area. Site management access only."
+            : "We'll email a secure link to set a new password."}
         </p>
         <div className="mt-6 space-y-4">
           <div>
@@ -98,29 +117,115 @@ function AdminLogin() {
               className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
             />
           </div>
-          <div>
-            <label htmlFor="admin-password" className="text-xs font-semibold">
-              Password
-            </label>
-            <input
-              id="admin-password"
-              type="password"
-              required
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
-            />
-          </div>
+          {mode === "signin" && (
+            <div>
+              <label htmlFor="admin-password" className="text-xs font-semibold">
+                Password
+              </label>
+              <input
+                id="admin-password"
+                type="password"
+                required
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
+              />
+            </div>
+          )}
+          {sent && mode === "reset" && (
+            <p className="rounded-xl border border-border bg-card px-3 py-2 text-xs text-muted-foreground">
+              If that address belongs to the admin account, a reset link is on its way.
+              Open it and choose a new password.
+            </p>
+          )}
           <button
             disabled={busy}
             className="flex w-full items-center justify-center gap-2 rounded-full brand-gradient px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft disabled:opacity-60"
           >
-            {busy && <Loader2 className="h-4 w-4 animate-spin" />} Sign in
+            {busy && <Loader2 className="h-4 w-4 animate-spin" />}
+            {mode === "signin" ? "Sign in" : "Send reset link"}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setMode(mode === "signin" ? "reset" : "signin");
+              setSent(false);
+            }}
+            className="w-full text-center text-xs font-semibold text-muted-foreground transition-colors hover:text-primary"
+          >
+            {mode === "signin" ? "Forgot password?" : "Back to sign in"}
           </button>
         </div>
       </form>
     </main>
+  );
+}
+
+function ChangePassword() {
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (password.length < 8) {
+      toast.error("Use at least 8 characters");
+      return;
+    }
+    if (password !== confirm) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    setBusy(true);
+    const { error } = await supabase.auth.updateUser({ password });
+    setBusy(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setPassword("");
+    setConfirm("");
+    toast.success("Password updated");
+  }
+
+  return (
+    <section className="rounded-2xl border border-border bg-card p-6">
+      <h2 className="font-display text-lg font-bold">Change admin password</h2>
+      <p className="mt-1 text-xs text-muted-foreground">
+        Update the password for this account without a code change.
+      </p>
+      <form onSubmit={submit} className="mt-4 grid gap-3 sm:max-w-sm">
+        <label className="text-xs font-semibold">
+          New password
+          <input
+            type="password"
+            required
+            autoComplete="new-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={fieldClass}
+          />
+        </label>
+        <label className="text-xs font-semibold">
+          Confirm password
+          <input
+            type="password"
+            required
+            autoComplete="new-password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            className={fieldClass}
+          />
+        </label>
+        <button
+          disabled={busy}
+          className="inline-flex items-center justify-center gap-2 rounded-full brand-gradient px-5 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+        >
+          {busy && <Loader2 className="h-4 w-4 animate-spin" />} Update password
+        </button>
+      </form>
+    </section>
   );
 }
 
