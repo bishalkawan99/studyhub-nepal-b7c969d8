@@ -389,6 +389,8 @@ function Overview() {
           <p className="mt-4 text-sm text-muted-foreground">No materials uploaded yet.</p>
         )}
       </section>
+
+      <ChangePassword />
     </div>
   );
 }
