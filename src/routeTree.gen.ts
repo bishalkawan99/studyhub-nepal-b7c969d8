@@ -22,6 +22,7 @@ import { Route as NotesRouteImport } from './routes/notes'
 import { Route as PastPapersRouteImport } from './routes/past-papers'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as QuestionBankRouteImport } from './routes/question-bank'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SubjectClassIdSlugRouteImport } from './routes/subject.$classId.$slug'
@@ -91,6 +92,11 @@ const QuestionBankRoute = QuestionBankRouteImport.update({
   path: '/question-bank',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/past-papers': typeof PastPapersRoute
   '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
@@ -139,6 +146,7 @@ export interface FileRoutesByTo {
   '/past-papers': typeof PastPapersRoute
   '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
@@ -158,6 +166,7 @@ export interface FileRoutesById {
   '/past-papers': typeof PastPapersRoute
   '/privacy': typeof PrivacyRoute
   '/question-bank': typeof QuestionBankRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
@@ -178,6 +187,7 @@ export interface FileRouteTypes {
     | '/past-papers'
     | '/privacy'
     | '/question-bank'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/terms'
     | '/subject/$classId/$slug'
@@ -196,6 +206,7 @@ export interface FileRouteTypes {
     | '/past-papers'
     | '/privacy'
     | '/question-bank'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/terms'
     | '/subject/$classId/$slug'
@@ -214,6 +225,7 @@ export interface FileRouteTypes {
     | '/past-papers'
     | '/privacy'
     | '/question-bank'
+    | '/reset-password'
     | '/sitemap.xml'
     | '/terms'
     | '/subject/$classId/$slug'
@@ -233,6 +245,7 @@ export interface RootRouteChildren {
   PastPapersRoute: typeof PastPapersRoute
   PrivacyRoute: typeof PrivacyRoute
   QuestionBankRoute: typeof QuestionBankRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   SubjectClassIdSlugRoute: typeof SubjectClassIdSlugRoute
@@ -331,6 +344,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuestionBankRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -369,6 +389,7 @@ const rootRouteChildren: RootRouteChildren = {
   PastPapersRoute: PastPapersRoute,
   PrivacyRoute: PrivacyRoute,
   QuestionBankRoute: QuestionBankRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   SubjectClassIdSlugRoute: SubjectClassIdSlugRoute,
@@ -376,13 +397,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
