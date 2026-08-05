@@ -199,8 +199,8 @@ function Home() {
             {subjects.map((s) => (
               <Link
                 key={s.slug}
-                to="/subject/$classId/$slug"
-                params={{ classId: c, slug: s.slug }}
+                to="/$classSlug/$subjectSlug"
+                params={{ classSlug: `class-${c}`, subjectSlug: s.slug }}
                 className="lift group rounded-2xl border border-border bg-card p-5"
               >
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">

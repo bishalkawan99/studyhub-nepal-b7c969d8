@@ -56,8 +56,8 @@ export function Footer() {
             {subjects.slice(0, 5).map((s) => (
               <li key={s.slug}>
                 <Link
-                  to="/subject/$classId/$slug"
-                  params={{ classId: "12", slug: s.slug }}
+                  to="/$classSlug/$subjectSlug"
+                  params={{ classSlug: "class-12", subjectSlug: s.slug }}
                   className="transition-colors hover:text-primary"
                 >
                   {s.name}

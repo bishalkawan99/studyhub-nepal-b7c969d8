@@ -25,7 +25,10 @@ import { Route as QuestionBankRouteImport } from './routes/question-bank'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ClassSlugSubjectSlugIndexRouteImport } from './routes/$classSlug.$subjectSlug.index'
 import { Route as SubjectClassIdSlugRouteImport } from './routes/subject.$classId.$slug'
+import { Route as ClassSlugSubjectSlugMcqsIndexRouteImport } from './routes/$classSlug.$subjectSlug.mcqs.index'
+import { Route as ClassSlugSubjectSlugMcqsChapterRouteImport } from './routes/$classSlug.$subjectSlug.mcqs.$chapter'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -107,11 +110,29 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClassSlugSubjectSlugIndexRoute =
+  ClassSlugSubjectSlugIndexRouteImport.update({
+    id: '/$classSlug/$subjectSlug/',
+    path: '/$classSlug/$subjectSlug/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const SubjectClassIdSlugRoute = SubjectClassIdSlugRouteImport.update({
   id: '/subject/$classId/$slug',
   path: '/subject/$classId/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClassSlugSubjectSlugMcqsIndexRoute =
+  ClassSlugSubjectSlugMcqsIndexRouteImport.update({
+    id: '/$classSlug/$subjectSlug/mcqs/',
+    path: '/$classSlug/$subjectSlug/mcqs/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ClassSlugSubjectSlugMcqsChapterRoute =
+  ClassSlugSubjectSlugMcqsChapterRouteImport.update({
+    id: '/$classSlug/$subjectSlug/mcqs/$chapter',
+    path: '/$classSlug/$subjectSlug/mcqs/$chapter',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -131,6 +152,9 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
+  '/$classSlug/$subjectSlug/': typeof ClassSlugSubjectSlugIndexRoute
+  '/$classSlug/$subjectSlug/mcqs/$chapter': typeof ClassSlugSubjectSlugMcqsChapterRoute
+  '/$classSlug/$subjectSlug/mcqs/': typeof ClassSlugSubjectSlugMcqsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -150,6 +174,9 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
+  '/$classSlug/$subjectSlug': typeof ClassSlugSubjectSlugIndexRoute
+  '/$classSlug/$subjectSlug/mcqs/$chapter': typeof ClassSlugSubjectSlugMcqsChapterRoute
+  '/$classSlug/$subjectSlug/mcqs': typeof ClassSlugSubjectSlugMcqsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -170,6 +197,9 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
+  '/$classSlug/$subjectSlug/': typeof ClassSlugSubjectSlugIndexRoute
+  '/$classSlug/$subjectSlug/mcqs/$chapter': typeof ClassSlugSubjectSlugMcqsChapterRoute
+  '/$classSlug/$subjectSlug/mcqs/': typeof ClassSlugSubjectSlugMcqsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -191,6 +221,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/subject/$classId/$slug'
+    | '/$classSlug/$subjectSlug/'
+    | '/$classSlug/$subjectSlug/mcqs/$chapter'
+    | '/$classSlug/$subjectSlug/mcqs/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -210,6 +243,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/subject/$classId/$slug'
+    | '/$classSlug/$subjectSlug'
+    | '/$classSlug/$subjectSlug/mcqs/$chapter'
+    | '/$classSlug/$subjectSlug/mcqs'
   id:
     | '__root__'
     | '/'
@@ -229,6 +265,9 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/terms'
     | '/subject/$classId/$slug'
+    | '/$classSlug/$subjectSlug/'
+    | '/$classSlug/$subjectSlug/mcqs/$chapter'
+    | '/$classSlug/$subjectSlug/mcqs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -249,6 +288,9 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   SubjectClassIdSlugRoute: typeof SubjectClassIdSlugRoute
+  ClassSlugSubjectSlugIndexRoute: typeof ClassSlugSubjectSlugIndexRoute
+  ClassSlugSubjectSlugMcqsChapterRoute: typeof ClassSlugSubjectSlugMcqsChapterRoute
+  ClassSlugSubjectSlugMcqsIndexRoute: typeof ClassSlugSubjectSlugMcqsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -365,11 +407,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$classSlug/$subjectSlug/': {
+      id: '/$classSlug/$subjectSlug/'
+      path: '/$classSlug/$subjectSlug'
+      fullPath: '/$classSlug/$subjectSlug/'
+      preLoaderRoute: typeof ClassSlugSubjectSlugIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/subject/$classId/$slug': {
       id: '/subject/$classId/$slug'
       path: '/subject/$classId/$slug'
       fullPath: '/subject/$classId/$slug'
       preLoaderRoute: typeof SubjectClassIdSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$classSlug/$subjectSlug/mcqs/': {
+      id: '/$classSlug/$subjectSlug/mcqs/'
+      path: '/$classSlug/$subjectSlug/mcqs'
+      fullPath: '/$classSlug/$subjectSlug/mcqs/'
+      preLoaderRoute: typeof ClassSlugSubjectSlugMcqsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$classSlug/$subjectSlug/mcqs/$chapter': {
+      id: '/$classSlug/$subjectSlug/mcqs/$chapter'
+      path: '/$classSlug/$subjectSlug/mcqs/$chapter'
+      fullPath: '/$classSlug/$subjectSlug/mcqs/$chapter'
+      preLoaderRoute: typeof ClassSlugSubjectSlugMcqsChapterRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -393,17 +456,10 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   SubjectClassIdSlugRoute: SubjectClassIdSlugRoute,
+  ClassSlugSubjectSlugIndexRoute: ClassSlugSubjectSlugIndexRoute,
+  ClassSlugSubjectSlugMcqsChapterRoute: ClassSlugSubjectSlugMcqsChapterRoute,
+  ClassSlugSubjectSlugMcqsIndexRoute: ClassSlugSubjectSlugMcqsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
