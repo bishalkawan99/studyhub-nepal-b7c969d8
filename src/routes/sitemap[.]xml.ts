@@ -40,7 +40,10 @@ export const Route = createFileRoute("/sitemap.xml")({
         const entries = [
           ...paths.map((path) => ({ path, priority: path === "/" ? "1.0" : "0.8" })),
           ...["11", "12"].flatMap((classId) =>
-            subjectSlugs.map((slug) => ({ path: `/subject/${classId}/${slug}`, priority: "0.6" })),
+            subjectSlugs.flatMap((slug) => [
+              { path: `/class-${classId}/${slug}`, priority: "0.7" },
+              { path: `/class-${classId}/${slug}/mcqs`, priority: "0.6" },
+            ]),
           ),
         ];
 

@@ -151,8 +151,8 @@ export function ResourceLibrary({
                 <p className="mt-4 text-sm text-muted-foreground">{r.meta}</p>
                 <div className="mt-5 flex gap-2">
                   <Link
-                    to="/subject/$classId/$slug"
-                    params={{ classId: r.classId, slug }}
+                    to="/$classSlug/$subjectSlug"
+                    params={{ classSlug: `class-${r.classId}`, subjectSlug: slug }}
                     className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl brand-gradient px-3 py-2 text-xs font-semibold text-primary-foreground"
                   >
                     <Eye className="h-4 w-4" /> View
