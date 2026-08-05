@@ -358,7 +358,9 @@ export type Database = {
           correct_index: number
           created_at: string
           created_by: string | null
+          difficulty: string
           explanation: string | null
+          faculty: string
           id: string
           is_published: boolean
           options: Json
@@ -372,7 +374,9 @@ export type Database = {
           correct_index: number
           created_at?: string
           created_by?: string | null
+          difficulty?: string
           explanation?: string | null
+          faculty?: string
           id?: string
           is_published?: boolean
           options: Json
@@ -386,7 +390,9 @@ export type Database = {
           correct_index?: number
           created_at?: string
           created_by?: string | null
+          difficulty?: string
           explanation?: string | null
+          faculty?: string
           id?: string
           is_published?: boolean
           options?: Json
