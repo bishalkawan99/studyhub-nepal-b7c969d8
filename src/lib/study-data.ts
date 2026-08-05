@@ -146,12 +146,12 @@ export const searchIndex = classes.flatMap((classId) =>
     {
       label: `Class ${classId} ${s.name} Notes`,
       type: "Notes",
-      to: `/subject/${classId}/${s.slug}`,
+      to: `/class-${classId}/${s.slug}`,
     },
     ...s.chapters.map((c) => ({
       label: `${c} — Class ${classId} ${s.name}`,
       type: "Chapter",
-      to: `/subject/${classId}/${s.slug}`,
+      to: `/class-${classId}/${s.slug}`,
     })),
   ]),
 );
