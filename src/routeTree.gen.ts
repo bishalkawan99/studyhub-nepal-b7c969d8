@@ -27,6 +27,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ClassSlugSubjectSlugIndexRouteImport } from './routes/$classSlug.$subjectSlug.index'
 import { Route as SubjectClassIdSlugRouteImport } from './routes/subject.$classId.$slug'
+import { Route as ClassSlugSubjectSlugMcqsIndexRouteImport } from './routes/$classSlug.$subjectSlug.mcqs.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -119,6 +120,12 @@ const SubjectClassIdSlugRoute = SubjectClassIdSlugRouteImport.update({
   path: '/subject/$classId/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClassSlugSubjectSlugMcqsIndexRoute =
+  ClassSlugSubjectSlugMcqsIndexRouteImport.update({
+    id: '/$classSlug/$subjectSlug/mcqs/',
+    path: '/$classSlug/$subjectSlug/mcqs/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -139,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
   '/$classSlug/$subjectSlug/': typeof ClassSlugSubjectSlugIndexRoute
+  '/$classSlug/$subjectSlug/mcqs/': typeof ClassSlugSubjectSlugMcqsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -159,6 +167,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
   '/$classSlug/$subjectSlug': typeof ClassSlugSubjectSlugIndexRoute
+  '/$classSlug/$subjectSlug/mcqs': typeof ClassSlugSubjectSlugMcqsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -180,6 +189,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/subject/$classId/$slug': typeof SubjectClassIdSlugRoute
   '/$classSlug/$subjectSlug/': typeof ClassSlugSubjectSlugIndexRoute
+  '/$classSlug/$subjectSlug/mcqs/': typeof ClassSlugSubjectSlugMcqsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -202,6 +212,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/subject/$classId/$slug'
     | '/$classSlug/$subjectSlug/'
+    | '/$classSlug/$subjectSlug/mcqs/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/subject/$classId/$slug'
     | '/$classSlug/$subjectSlug'
+    | '/$classSlug/$subjectSlug/mcqs'
   id:
     | '__root__'
     | '/'
@@ -242,6 +254,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/subject/$classId/$slug'
     | '/$classSlug/$subjectSlug/'
+    | '/$classSlug/$subjectSlug/mcqs/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -263,6 +276,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   SubjectClassIdSlugRoute: typeof SubjectClassIdSlugRoute
   ClassSlugSubjectSlugIndexRoute: typeof ClassSlugSubjectSlugIndexRoute
+  ClassSlugSubjectSlugMcqsIndexRoute: typeof ClassSlugSubjectSlugMcqsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -393,6 +407,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubjectClassIdSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$classSlug/$subjectSlug/mcqs/': {
+      id: '/$classSlug/$subjectSlug/mcqs/'
+      path: '/$classSlug/$subjectSlug/mcqs'
+      fullPath: '/$classSlug/$subjectSlug/mcqs/'
+      preLoaderRoute: typeof ClassSlugSubjectSlugMcqsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -415,6 +436,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   SubjectClassIdSlugRoute: SubjectClassIdSlugRoute,
   ClassSlugSubjectSlugIndexRoute: ClassSlugSubjectSlugIndexRoute,
+  ClassSlugSubjectSlugMcqsIndexRoute: ClassSlugSubjectSlugMcqsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
